@@ -4,7 +4,7 @@ Howdy! Glad to see you here partner :)
 
 ## What is this?
 
-This is a template for creating Google Codelabs. These can be used to create interactive tutorials for developers.
+This is a template for creating Google Codelabs. It's a product created by Google for creating interactive tutorials for developers.
 
 ## How does it work?
 
