@@ -31,3 +31,9 @@ It works using markdown files. When following a specific standard, the Claat too
 
 You can use any hosting platform. I recommend netlify.com. It's free and easy to use.
 
+## Example project (Frontend)
+
+If you want to see an example project, you can check out the frontend onboarding project.
+
+[Github](https://github.com/appwise-labs/onboarding-frontend)
+[Live demo](https://wisemen-onboarding-frontend.netlify.app/#0)
