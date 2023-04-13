@@ -1,8 +1,6 @@
 # Onboarding Codelab starterkit
 
-Howdy! Glad to see you here partner :) 
-
-This is the starterkit for the Onboarding Codelab. 
+Howdy! Glad to see you here partner :)
 
 ## What is this?
 
