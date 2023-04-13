@@ -10,7 +10,10 @@ This is a template for creating Google Codelabs. These can be used to create int
 
 ## How does it work?
 
-It works using markdown files. When following a specific standard, the Claat tool can be used to convert these markdown files into a web page.
+It works using markdown files. When following a specific standard, Claat (Code labs as a thing) is a
+tool that converts markdown files into a web page. It's a tool created by Google.
+
+You can install the claat tool locally using Go. But then you have to install Go and set up your environment. It's a bit of a hassle. That's why I included the claat tool in this repository.
 
 ## How do I get started?
 
