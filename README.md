@@ -18,14 +18,14 @@ You can install the claat tool locally using Go. But then you have to install Go
 1. Clone this repository
 2. Install Node if you don't have it already
 3. Run `npm install` to install the dependencies
-4. The claat tool comes with the repository
-5. Run `npm run serve` to start the local server
-6. Open `http://127.0.0.1:8080` in your browser
+4. Run `npm run serve` to start the local server
+5. Open `http://127.0.0.1:8080` in your browser to see the rendered codelab
+6. Profit
 
 ## How do I edit the codelab?
 
-1. Edit the `index.md` file
-2. Run `npm run serve` to start the local server
+1. Run `npm run serve` to start the local server
+2. Edit the `index.md` file
 3. Refresh your browser after making changes
 
 ## How do I publish the codelab?
