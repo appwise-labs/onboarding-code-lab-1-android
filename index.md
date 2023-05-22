@@ -114,7 +114,7 @@ strategy [here](https://www.atlassian.com/git/tutorials/comparing-workflows/gitf
 
 * **master** branch: this branch contains the latest release of the app
 * **staging** branch: this branch is used send to the client for testing
-* **QA** branch: this branch is used to test the features before they are merged into the develop branch
+* **QA** branch: this branch is used to test the features before they are merged into the staging branch
 * **develop** branch: this branch contains the latest development changes
 * **feature/...** branches: these branches are used to develop new features for the upcoming release
 * **bugfix/...** branches: these branches are used to fix bugs in the app

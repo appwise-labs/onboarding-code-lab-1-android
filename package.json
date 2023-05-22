@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./claat-linux export -o dist index.md",
-    "serve": "nodemon --watch index.md --exec './claat export index.md && http-server index'"
+    "serve": "nodemon --watch index.md --exec './claat export index.md && sed -i \"\" -e \"/body/i\\\\\n<link rel=\\\"stylesheet\\\" href=\\\"css/style.css\\\">\" index/index.html && http-server index'"
   },
   "repository": {
     "type": "git",

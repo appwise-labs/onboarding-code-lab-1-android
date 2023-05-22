@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="theme-color" content="#4F7DC9">
   <meta charset="UTF-8">
-  <title>Wisemen Onboarding Starterkit</title>
+  <title>Wiselab Android 1</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://storage.googleapis.com/claat-public/codelab-elements.css">
@@ -19,32 +19,180 @@
     }
   </style>
 </head>
+<link rel="stylesheet" href="css/style.css">
 <body>
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid=""
                   id="index"
-                  title="Wisemen Onboarding Starterkit"
+                  title="Wiselab Android 1"
                   environment="web"
                   feedback-link="">
     
-      <google-codelab-step label="Introduction" duration="0">
-        <p>Welcome to Wiselab! We are excited to have you on board. This codelab will help you get started with the Wiselab onboarding process.</p>
+      <google-codelab-step label="What you&#39;ll learn: overview" duration="60">
+        <p class="image-container"><img style="width: 200.00px" src="img/8dfc64cf84a4ba84.png"></p>
+<p>Hello fellow developer! Welcome to <strong>Wisemen</strong>, we are happy to have you on board! We want to make sure you are soon up to speed with the core of Android development and our way of working. Therefore we created this awesome series of <strong>CodeLabs</strong> for you. These are a constant work in progress, so please let us know if you have any feedback or suggestions! This is what you will learn in this CodeLab:</p>
+<h2 is-upgraded>1. Creating a new project with our Android Core Library</h2>
+<p>We have our own Android Core Library that we use in all our projects. This library contains a lot of useful classes and functions that we use in all our projects.</p>
+<h2 is-upgraded>2. Folder structure</h2>
+<p>We have a specific folder structure that we use in all our projects. This is to make sure that we can easily find all the files we need.</p>
+<h2 is-upgraded>3. AGILE</h2>
+<ol type="1">
+<li>Work with <strong>Jira</strong></li>
+<li>Using <strong>Bitbucket</strong> for version control</li>
+<li>Branching strategy</li>
+<li><strong>Pull Requests</strong></li>
+</ol>
+<h2 is-upgraded>4. Creating a first screen</h2>
+<ul>
+<li>How to use <strong>Figma</strong></li>
+<li>Write some code!</li>
+<li>Write some more code!</li>
+<li>Create your first <strong>PR</strong> (pull request)</li>
+</ul>
+<h2 is-upgraded>Let&#39;s get started!</h2>
+<p class="image-container"><img src="img/9d981e73ce0028af.gif"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Example page" duration="0">
-        <pre><code language="language-html" class="language-html">&lt;div&gt;
-  &lt;p&gt;I am the Code lab&lt;/p&gt;
-&lt;/div&gt;
+      <google-codelab-step label="What you need: Prerequisites" duration="55">
+        <p>Before we start, make sure you have everything you need to complete this <strong>WiseLab</strong>. You will need:</p>
+<h2 is-upgraded>Android Studio</h2>
+<p>Download the IDE here if you don&#39;t have it already! <a href="https://developer.android.com/studio" target="_blank">Android Studio</a></p>
+<h2 is-upgraded>Figma</h2>
+<p>Our designers work with <strong>Figma</strong>. You can download it here:</p>
+<ul>
+<li><a href="https://www.figma.com/downloads/" target="_blank">Figma</a></li>
+</ul>
+<p>To access the designs you need to log in with your Wisemen account:</p>
+<ul>
+<li><a href="https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?node-id=407-4095&t=2qdyy89lKwN7dFw3-0" target="_blank">Figma wireframes</a></li>
+</ul>
+<h2 is-upgraded>BitBucket repository</h2>
+<p><em>ToDo: Add link to BitBucket repository</em></p>
+<h2 is-upgraded>Jira access</h2>
+<p><em>ToDo: Add link to Jira</em></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create the project" duration="50">
+        <h2 is-upgraded>3.1 Create a new project</h2>
+<p>Open Android Studio and create a new project. You can name it Wiselab_Android_YOURNAME.</p>
+<p class="image-container"><img src="img/9da80aa01603be59.png"></p>
+<h2 is-upgraded>3.2 Link your project to BitBucket</h2>
+<p>You can find the link to your repo on your <a href="https://appwise.atlassian.net/wiki/home" target="_blank">personal Confluence</a> page.</p>
+<p class="image-container"><img src="img/ebb9796df49a35f5.png"></p>
+<h3 is-upgraded>Use the terminal or IDE to link your project to BitBucket</h3>
+<p>We will show you how to work with the <strong><em>terminal</em></strong>. If you prefer to work with the <strong><em>IDE</em></strong>, you can find the instructions <a href="https://www.jetbrains.com/help/idea/set-up-a-git-repository.html#add-remote" target="_blank">here</a>.</p>
+<ul>
+<li>Open the terminal in Android Studio (bottom left corner)</li>
+<li>add remote origin to project</li>
+<li><pre><code language="language-shell" class="language-shell">git init
+git remote add origin &lt;your repo url&gt;
 </code></pre>
+</li>
+</ul>
+<p>From here on you can choose to use the terminal or the IDE to work with Git.</p>
+<h2 is-upgraded>3.3 Our Branching strategy</h2>
+<p>We use the <strong>Gitflow</strong> branching strategy. You can find more information about this strategy <a href="https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow" target="_blank">here</a>.</p>
+<ul>
+<li><strong>master</strong> branch: this branch contains the latest release of the app</li>
+<li><strong>staging</strong> branch: this branch is used send to the client for testing</li>
+<li><strong>QA</strong> branch: this branch is used to test the features before they are merged into the staging branch</li>
+<li><strong>develop</strong> branch: this branch contains the latest development changes</li>
+<li><strong>feature/...</strong> branches: these branches are used to develop new features for the upcoming release</li>
+<li><strong>bugfix/...</strong> branches: these branches are used to fix bugs in the app</li>
+</ul>
+<p>Make sure you have created all 4 ‘standard&#39; branches. You can do this by either using the terminal, IDE or a GUI tool like <a href="https://www.sourcetreeapp.com/" target="_blank">SourceTree</a> or <a href="https://git-fork.com/" target="_blank">Fork</a>.</p>
+<p>Now checkout the <strong>develop</strong> branch and create a new feature branch called <strong>feature/setup-project</strong>.</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Completed" duration="0">
-        <p>Thank you for completing the Wiselab onboarding codelab. We hope you enjoyed it!</p>
+      <google-codelab-step label="Add the Android Core Library" duration="40">
+        <p>Now that you have created your project, it&#39;s time to add our <a href="https://github.com/appwise-labs/AndroidCore" target="_blank">Android Core Library</a>! This library contains a lot of useful classes and functions that we use in all our projects. The latest version is also noted in the readme.</p>
+<h2 is-upgraded>4.1 Open the <strong>build.gradle</strong> file of your <strong>project</strong></h2>
+<ul>
+<li>Add the following <strong>buildscript</strong> to the top of the file:</li>
+</ul>
+<pre><code language="language-gradle" class="language-gradle">buildscript {
+    ext {
+        android_core_version = &#34;1.4.3&#34;
+        room_version = &#39;2.5.1&#39;
+        nav_version = &#34;2.5.3&#34;
+    }
+    dependencies {
+        classpath &#39;com.google.gms:google-services:4.3.15&#39;
+        classpath &#39;gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.14.0&#39;
+    }
+}
+</code></pre>
+<ul>
+<li>Make sure you have the following plugins:</li>
+</ul>
+<pre><code language="language-gradle" class="language-gradle">plugins {
+    id &#39;com.android.application&#39; version &#39;8.0.0&#39; apply false
+    id &#39;com.android.library&#39; version &#39;8.0.0&#39; apply false
+    id &#39;org.jetbrains.kotlin.android&#39; version &#39;1.8.10&#39; apply false
+    id &#39;androidx.navigation.safeargs.kotlin&#39; version &#34;$nav_version&#34; apply false
+}
+</code></pre>
+<ul>
+<li>Under the plugins add the following task:</li>
+</ul>
+<pre><code language="language-gradle" class="language-gradle">task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+</code></pre>
+<h2 is-upgraded>4.2 Open the <strong>settings.gradle</strong> file of your <strong>project</strong></h2>
+<ul>
+<li>Under the <strong>repositories</strong> tag in the <strong>dependencyResolutionManagement</strong> block, add the following:</li>
+</ul>
+<pre><code language="language-gradle" class="language-gradle">mavenLocal()
+    maven { url &#39;maven.google.com&#39; }
+    maven { url &#39;https://maven.fabric.io/public&#39; }
+    maven { url &#34;https://jitpack.io&#34; }
+    maven { url &#39;https://plugins.gradle.org/m2/&#39;}
+</code></pre>
+<h2 is-upgraded>4.3 Open the <strong>build.gradle</strong> file of your <strong>app</strong></h2>
+<ul>
+<li>Add the following <strong>plugins</strong></li>
+</ul>
+<pre><code language="language-gradle" class="language-gradle">plugins {
+    id &#39;com.android.application&#39;
+    id &#39;org.jetbrains.kotlin.android&#39;
+    id &#39;kotlin-kapt&#39;
+    id &#39;androidx.navigation.safeargs.kotlin&#39;
+}
+</code></pre>
+<ul>
+<li>Under the <em>kotlinOptions</em> in the android block, add the following:</li>
+</ul>
+<pre><code language="language-gradle" class="language-gradle">buildFeatures {
+    dataBinding true
+    viewBinding true
+}
+</code></pre>
+<ul>
+<li>Add the following <strong>dependencies</strong></li>
+</ul>
+<pre><code language="language-gradle" class="language-gradle">// Core
+    implementation &#34;com.github.appwise-labs.AndroidCore:core:$android_core_version&#34;
+    implementation &#34;com.github.appwise-labs.AndroidCore:room:$android_core_version&#34;
+    implementation &#34;com.github.appwise-labs.AndroidCore:networking:$android_core_version&#34;
+    
+// Room
+    kapt &#34;androidx.room:room-compiler:$room_version&#34;
+</code></pre>
+<p>Now you can sync your project and you&#39;re ready to go! 🚀 If you have any more questions about the Android Core Library, you can find more information on the link above.</p>
+<p>Don&#39;t forget to push these changes to your <strong>feature/setup-project</strong> branch with a clear commit message.</p>
 
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Setup Project" duration="0">
+        
 
       </google-codelab-step>
     
@@ -56,5 +204,6 @@
   <script src="https://storage.googleapis.com/claat-public/codelab-elements.js"></script>
   <script src="//support.google.com/inapp/api.js"></script>
 
+<link rel="stylesheet" href="css/style.css">
 </body>
 </html>
