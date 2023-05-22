@@ -135,6 +135,7 @@ classes and functions that we use in all our projects. The latest version is als
 ### 4.1 Open the **build.gradle** file of your **project**
 
 * Add the following **buildscript** to the top of the file:
+* Be sure to check for the latest versions!
 
 ```gradle
 buildscript {
