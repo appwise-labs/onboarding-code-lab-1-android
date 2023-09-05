@@ -83,9 +83,9 @@ Duration: 0:50:00
 
 ### 3.1 Create a new project
 
-Open Android Studio and create a new project. You can name it Wiselab_Android_YOURNAME.
+Open Android Studio and create a new Compose project. You can name it Wiselab_Android_YOURNAME.
 
-![](index/img/setup/new_project.png)
+![](index/img/setup/new_compose_project.png)
 
 ### 3.2 Link your project to BitBucket
 
@@ -134,39 +134,15 @@ classes and functions that we use in all our projects. The latest version is als
 
 ### 4.1 Open the **build.gradle** file of your **project**
 
-* Add the following **buildscript** to the top of the file:
+* Add the following **plugin** to the top of the file:
 * Be sure to check for the latest versions!
+* This is needed to use the Room dependency for our local database
 
-```gradle
-buildscript {
-    ext {
-        android_core_version = "1.4.3"
-        room_version = '2.5.1'
-        nav_version = "2.5.3"
-    }
-    dependencies {
-        classpath 'com.google.gms:google-services:4.3.15'
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.14.0'
-    }
-}
-```
-
-* Make sure you have the following plugins:
-
-```gradle
+```gradle.kts
 plugins {
-    id 'com.android.application' version '8.0.0' apply false
-    id 'com.android.library' version '8.0.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.8.10' apply false
-    id 'androidx.navigation.safeargs.kotlin' version "$nav_version" apply false
-}
-```
-
-* Under the plugins add the following task:
-
-```gradle
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    id("com.android.application") version "8.1.0" apply false
+    id("org.jetbrains.kotlin.android") version "1.8.10" apply false
+    id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
 }
 ```
 
@@ -174,46 +150,50 @@ task clean(type: Delete) {
 
 * Under the **repositories** tag in the **dependencyResolutionManagement** block, add the following:
 
-```gradle
-mavenLocal()
-    maven { url 'maven.google.com' }
-    maven { url 'https://maven.fabric.io/public' }
-    maven { url "https://jitpack.io" }
-    maven { url 'https://plugins.gradle.org/m2/'}
+```gradle.kts
+repositories {
+    google()
+    mavenCentral()
+    
+    maven("maven.google.com")
+    maven("https://maven.fabric.io/public")
+    maven("https://jitpack.io")
+    maven("https://plugins.gradle.org/m2/")
+}
 ```
 
 ### 4.3 Open the **build.gradle** file of your **app**
 
-* Add the following **plugins**
+* Make sure you have following **plugins**
 
-```gradle
+```gradle.kts
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'androidx.navigation.safeargs.kotlin'
-}
-```
-
-* Under the _kotlinOptions_ in the android block, add the following:
-
-```gradle
-buildFeatures {
-    dataBinding true
-    viewBinding true
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
 ```
 
 * Add the following **dependencies**
 
 ```gradle
-// Core
-    implementation "com.github.appwise-labs.AndroidCore:core:$android_core_version"
-    implementation "com.github.appwise-labs.AndroidCore:room:$android_core_version"
-    implementation "com.github.appwise-labs.AndroidCore:networking:$android_core_version"
+    //Appwise core dependencies
+    implementation("com.github.appwise-labs.AndroidCore:core:1.4.3")
+    implementation("com.github.appwise-labs.AndroidCore:room:1.4.3")
+    implementation("com.github.appwise-labs.AndroidCore:networking:1.4.3")
+
+    //Room
+    implementation("androidx.room:room-runtime:2.5.2")
+    ksp("androidx.room:room-compiler:2.5.2")
     
-// Room
-    kapt "androidx.room:room-compiler:$room_version"
+    //Koin for dependency injection
+    implementation("io.insert-koin:koin-core:3.4.0")
+    implementation("io.insert-koin:koin-android:3.4.0")
+    implementation("io.insert-koin:koin-androidx-compose:3.4.0")
+    
+    //Compose navigation
+    implementation("io.github.raamcosta.compose-destinations:animations-core:1.8.38-beta")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.8.42-beta")
 ```
 
 Now you can sync your project and you're ready to go! 🚀
@@ -222,4 +202,178 @@ If you have any more questions about the Android Core Library, you can find more
 Don't forget to push these changes to your **feature/setup-project** branch with a clear commit message.
 
 ## Setup Project
+
+It's time to set some last few things before we can start coding!
+
+### 5.1 Theme
+
+* Go to the figma file under the colors tab and place the colors in the **Color.kt** file under the theme package.
+* Change the colors of the **LightColorScheme** in the theme.kt file, delete the **DarkColorScheme** because we are
+  not going to implement a dark theme.
+* Check the [Material3](https://m3.material.io/styles/color/the-color-system/key-colors-tones) guidelines for the
+  key colors and Color roles.
+* Change the **Theme**-function to the most basic version like this:
+
+ ```kotlin
+    @Composable
+fun AppTheme(
+    content: @Composable () -> Unit
+) {
+    val colors = LightColorScheme
+
+    MaterialTheme(
+        colorScheme = colors,
+        content = content
+    )
+}
+```
+
+### 5.2 TextStyles
+
+* Add an **object**-file named **TextStyles** to preset our different text styles. 🔤
+* Use the [Material3](https://m3.material.io/styles/typography/applying-type) guidelines for the different text
+  styles.
+* Create the following styles in this file:
+    * HeadlineLarge
+    * HeadlineMedium
+    * HeadlineSmall
+    * Subtitle
+    * LabelLarge
+    * LabelSmall
+    * BodyLarge
+    * BodySmall
+    * Button
+
+### 5.3 Spacing
+
+* Add an **object**-file named **Spacing** to preset our different spacing values. 📏
+* Use the [Material3](https://m3.material.io/layout/spacing) guidelines for the different spacing values.
+* Use this as a reference for the different spacing values:
+
+```kotlin
+package com.wiselab.onboarding_compose.ui.theme
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+
+object Spacing {
+    val default: Dp = 0.dp
+    val extraSmall: Dp = 4.dp
+    val small: Dp = 8.dp
+    val medium: Dp = 16.dp
+    val large: Dp = 24.dp
+    val extraLarge: Dp = 40.dp
+    val huge: Dp = 64.dp
+}
+// this is a composition local --> you can call it for all composables without the need to pass it all down
+val LocalSpacing = compositionLocalOf { Spacing }
+
+val MaterialTheme.spacing: Spacing
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalSpacing.current
+```
+
+### 5.3 Check your first preview
+
+* Go to the **MainActivity.kt** file and check for errors.
+* Change the previous theme name to the new **AppTheme** name and clear the imports
+
+### 5.3.1 Add a virtual or physical device
+
+If you don't have a virtual or physical device, you can create one by following these steps: 📱
+
+**Physical device**
+
+* Go to your phone settings and enable **Developer options**. If you don't know how to do this, you can find more
+  information [here](https://developer.android.com/studio/debug/dev-options).
+* Connect you phone to your computer with either USB or Wireless debugging. You can find more
+  information [here](https://developer.android.com/tools/adb#connect-to-a-device-over-wi-fi).
+
+**Virtual device**
+
+* Go to the **AVD Manager** in Android Studio and create a new virtual device. You can find more
+  information [here](https://developer.android.com/studio/run/managing-avds).
+
+### 5.3.2 Run the preview
+
+In the **MainActivity.kt** file, click on the **Preview** button next to the **GreetingPreview** function. This
+will open a preview of your app in the IDE. If you have a virtual or physical device connected, you can also run
+the app on your device.
+
+![](index/img/setup/preview_example.png)
+
+Now you can push your changes to your **feature/setup-project** branch with a clear commit message and create a
+pull request to merge your branch into the **develop** branch. Don't forget to add your buddy as a reviewer! 🕵️
+
+## Create your first components and screen
+
+Start creating some UI components and a screen to show them on.
+
+### 6.1 Create some buttons
+
+* Create a new package called **shared** in the **ui** package. (Not in the **theme** package)
+* Create a new Kotlin file named **Buttons** to create our different buttons
+* Create the following buttons:
+    * PrimaryButton
+    * SecondaryButton
+    * TertiaryButton
+    * OutlinedButton
+* Show a preview of the buttons like this:
+
+<img width="400" src="index/img/setup/button_preview.png" />
+
+* Here's a bit of code to get you going:
+
+```kotlin
+@Preview
+@Composable
+fun ButtonsPreview() {
+  AppTheme {
+    Column(
+      //...
+    ) {
+      Buttons.Primary(
+        text = "Primary",
+        Modifier.fillMaxWidth()
+      ) {}
+
+      //...
+    }
+  }
+}
+
+object Buttons {
+
+    @Composable
+    fun Primary(
+        text: String,
+        modifier: Modifier = Modifier,
+        onClick: () -> Unit
+    ) {
+        Button(
+            modifier = modifier,
+            shape = RoundedCornerShape(5.dp),
+            colors = ButtonDefaults.buttonColors(
+                //...,
+                //...
+            ),
+            onClick = onClick
+        ) {
+            Text(text = text)
+        }
+    }
+}
+```
+* Don't forget to use the **Spacing** you set up in the previous step!
+
+### 6.2 Create a screen
+Because the task manager is seen as 1 Epic, create a new package called **taskManager** in the main package. In this package create a new package called **landing** for the landing screen.
+
+
+
 

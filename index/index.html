@@ -78,8 +78,8 @@
     
       <google-codelab-step label="Create the project" duration="50">
         <h2 is-upgraded>3.1 Create a new project</h2>
-<p>Open Android Studio and create a new project. You can name it Wiselab_Android_YOURNAME.</p>
-<p class="image-container"><img src="img/9da80aa01603be59.png"></p>
+<p>Open Android Studio and create a new Compose project. You can name it Wiselab_Android_YOURNAME.</p>
+<p class="image-container"><img src="img/b8bab59ad5170185.png"></p>
 <h2 is-upgraded>3.2 Link your project to BitBucket</h2>
 <p>You can find the link to your repo on your <a href="https://appwise.atlassian.net/wiki/home" target="_blank">personal Confluence</a> page.</p>
 <p class="image-container"><img src="img/ebb9796df49a35f5.png"></p>
@@ -114,76 +114,60 @@ git remote add origin &lt;your repo url&gt;
         <p>Now that you have created your project, it&#39;s time to add our <a href="https://github.com/appwise-labs/AndroidCore" target="_blank">Android Core Library</a>! This library contains a lot of useful classes and functions that we use in all our projects. The latest version is also noted in the readme.</p>
 <h2 is-upgraded>4.1 Open the <strong>build.gradle</strong> file of your <strong>project</strong></h2>
 <ul>
-<li>Add the following <strong>buildscript</strong> to the top of the file:</li>
+<li>Add the following <strong>plugin</strong> to the top of the file:</li>
+<li>Be sure to check for the latest versions!</li>
+<li>This is needed to use the Room dependency for our local database</li>
 </ul>
-<pre><code language="language-gradle" class="language-gradle">buildscript {
-    ext {
-        android_core_version = &#34;1.4.3&#34;
-        room_version = &#39;2.5.1&#39;
-        nav_version = &#34;2.5.3&#34;
-    }
-    dependencies {
-        classpath &#39;com.google.gms:google-services:4.3.15&#39;
-        classpath &#39;gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.14.0&#39;
-    }
-}
-</code></pre>
-<ul>
-<li>Make sure you have the following plugins:</li>
-</ul>
-<pre><code language="language-gradle" class="language-gradle">plugins {
-    id &#39;com.android.application&#39; version &#39;8.0.0&#39; apply false
-    id &#39;com.android.library&#39; version &#39;8.0.0&#39; apply false
-    id &#39;org.jetbrains.kotlin.android&#39; version &#39;1.8.10&#39; apply false
-    id &#39;androidx.navigation.safeargs.kotlin&#39; version &#34;$nav_version&#34; apply false
-}
-</code></pre>
-<ul>
-<li>Under the plugins add the following task:</li>
-</ul>
-<pre><code language="language-gradle" class="language-gradle">task clean(type: Delete) {
-    delete rootProject.buildDir
+<pre><code language="language-gradle.kts" class="language-gradle.kts">plugins {
+    id(&#34;com.android.application&#34;) version &#34;8.1.0&#34; apply false
+    id(&#34;org.jetbrains.kotlin.android&#34;) version &#34;1.8.10&#34; apply false
+    id(&#34;com.google.devtools.ksp&#34;) version &#34;1.8.10-1.0.9&#34; apply false
 }
 </code></pre>
 <h2 is-upgraded>4.2 Open the <strong>settings.gradle</strong> file of your <strong>project</strong></h2>
 <ul>
 <li>Under the <strong>repositories</strong> tag in the <strong>dependencyResolutionManagement</strong> block, add the following:</li>
 </ul>
-<pre><code language="language-gradle" class="language-gradle">mavenLocal()
-    maven { url &#39;maven.google.com&#39; }
-    maven { url &#39;https://maven.fabric.io/public&#39; }
-    maven { url &#34;https://jitpack.io&#34; }
-    maven { url &#39;https://plugins.gradle.org/m2/&#39;}
+<pre><code language="language-gradle.kts" class="language-gradle.kts">repositories {
+    google()
+    mavenCentral()
+    
+    maven(&#34;maven.google.com&#34;)
+    maven(&#34;https://maven.fabric.io/public&#34;)
+    maven(&#34;https://jitpack.io&#34;)
+    maven(&#34;https://plugins.gradle.org/m2/&#34;)
+}
 </code></pre>
 <h2 is-upgraded>4.3 Open the <strong>build.gradle</strong> file of your <strong>app</strong></h2>
 <ul>
-<li>Add the following <strong>plugins</strong></li>
+<li>Make sure you have following <strong>plugins</strong></li>
 </ul>
-<pre><code language="language-gradle" class="language-gradle">plugins {
-    id &#39;com.android.application&#39;
-    id &#39;org.jetbrains.kotlin.android&#39;
-    id &#39;kotlin-kapt&#39;
-    id &#39;androidx.navigation.safeargs.kotlin&#39;
-}
-</code></pre>
-<ul>
-<li>Under the <em>kotlinOptions</em> in the android block, add the following:</li>
-</ul>
-<pre><code language="language-gradle" class="language-gradle">buildFeatures {
-    dataBinding true
-    viewBinding true
+<pre><code language="language-gradle.kts" class="language-gradle.kts">plugins {
+    id(&#34;com.android.application&#34;)
+    id(&#34;org.jetbrains.kotlin.android&#34;)
+    id(&#34;com.google.devtools.ksp&#34;)
 }
 </code></pre>
 <ul>
 <li>Add the following <strong>dependencies</strong></li>
 </ul>
-<pre><code language="language-gradle" class="language-gradle">// Core
-    implementation &#34;com.github.appwise-labs.AndroidCore:core:$android_core_version&#34;
-    implementation &#34;com.github.appwise-labs.AndroidCore:room:$android_core_version&#34;
-    implementation &#34;com.github.appwise-labs.AndroidCore:networking:$android_core_version&#34;
+<pre><code language="language-gradle" class="language-gradle">    //Appwise core dependencies
+    implementation(&#34;com.github.appwise-labs.AndroidCore:core:1.4.3&#34;)
+    implementation(&#34;com.github.appwise-labs.AndroidCore:room:1.4.3&#34;)
+    implementation(&#34;com.github.appwise-labs.AndroidCore:networking:1.4.3&#34;)
+
+    //Room
+    implementation(&#34;androidx.room:room-runtime:2.5.2&#34;)
+    ksp(&#34;androidx.room:room-compiler:2.5.2&#34;)
     
-// Room
-    kapt &#34;androidx.room:room-compiler:$room_version&#34;
+    //Koin for dependency injection
+    implementation(&#34;io.insert-koin:koin-core:3.4.0&#34;)
+    implementation(&#34;io.insert-koin:koin-android:3.4.0&#34;)
+    implementation(&#34;io.insert-koin:koin-androidx-compose:3.4.0&#34;)
+    
+    //Compose navigation
+    implementation(&#34;io.github.raamcosta.compose-destinations:animations-core:1.8.38-beta&#34;)
+    ksp(&#34;io.github.raamcosta.compose-destinations:ksp:1.8.42-beta&#34;)
 </code></pre>
 <p>Now you can sync your project and you&#39;re ready to go! 🚀 If you have any more questions about the Android Core Library, you can find more information on the link above.</p>
 <p>Don&#39;t forget to push these changes to your <strong>feature/setup-project</strong> branch with a clear commit message.</p>
@@ -192,7 +176,163 @@ git remote add origin &lt;your repo url&gt;
       </google-codelab-step>
     
       <google-codelab-step label="Setup Project" duration="0">
-        
+        <p>It&#39;s time to set some last few things before we can start coding!</p>
+<h2 is-upgraded>5.1 Theme</h2>
+<ul>
+<li>Go to the figma file under the colors tab and place the colors in the <strong>Color.kt</strong> file under the theme package.</li>
+<li>Change the colors of the <strong>LightColorScheme</strong> in the theme.kt file, delete the <strong>DarkColorScheme</strong> because we are not going to implement a dark theme.</li>
+<li>Check the <a href="https://m3.material.io/styles/color/the-color-system/key-colors-tones" target="_blank">Material3</a> guidelines for the key colors and Color roles.</li>
+<li>Change the <strong>Theme</strong>-function to the most basic version like this:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">   @Composable
+fun AppTheme(
+   content: @Composable () -&gt; Unit
+) {
+   val colors = LightColorScheme
+
+   MaterialTheme(
+       colorScheme = colors,
+       content = content
+   )
+}
+</code></pre>
+<h2 is-upgraded>5.2 TextStyles</h2>
+<ul>
+<li>Add an <strong>object</strong>-file named <strong>TextStyles</strong> to preset our different text styles. 🔤</li>
+<li>Use the <a href="https://m3.material.io/styles/typography/applying-type" target="_blank">Material3</a> guidelines for the different text styles.</li>
+<li>Create the following styles in this file: <ul>
+<li>HeadlineLarge</li>
+<li>HeadlineMedium</li>
+<li>HeadlineSmall</li>
+<li>Subtitle</li>
+<li>LabelLarge</li>
+<li>LabelSmall</li>
+<li>BodyLarge</li>
+<li>BodySmall</li>
+<li>Button</li>
+</ul>
+</li>
+</ul>
+<h2 is-upgraded>5.3 Spacing</h2>
+<ul>
+<li>Add an <strong>object</strong>-file named <strong>Spacing</strong> to preset our different spacing values. 📏</li>
+<li>Use the <a href="https://m3.material.io/layout/spacing" target="_blank">Material3</a> guidelines for the different spacing values.</li>
+<li>Use this as a reference for the different spacing values:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">package com.wiselab.onboarding_compose.ui.theme
+
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+
+object Spacing {
+    val default: Dp = 0.dp
+    val extraSmall: Dp = 4.dp
+    val small: Dp = 8.dp
+    val medium: Dp = 16.dp
+    val large: Dp = 24.dp
+    val extraLarge: Dp = 40.dp
+    val huge: Dp = 64.dp
+}
+// this is a composition local --&gt; you can call it for all composables without the need to pass it all down
+val LocalSpacing = compositionLocalOf { Spacing }
+
+val MaterialTheme.spacing: Spacing
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalSpacing.current
+</code></pre>
+<h2 is-upgraded>5.3 Check your first preview</h2>
+<ul>
+<li>Go to the <strong>MainActivity.kt</strong> file and check for errors.</li>
+<li>Change the previous theme name to the new <strong>AppTheme</strong> name and clear the imports</li>
+</ul>
+<h2 is-upgraded>5.3.1 Add a virtual or physical device</h2>
+<p>If you don&#39;t have a virtual or physical device, you can create one by following these steps: 📱</p>
+<p><strong>Physical device</strong></p>
+<ul>
+<li>Go to your phone settings and enable <strong>Developer options</strong>. If you don&#39;t know how to do this, you can find more information <a href="https://developer.android.com/studio/debug/dev-options" target="_blank">here</a>.</li>
+<li>Connect you phone to your computer with either USB or Wireless debugging. You can find more information <a href="https://developer.android.com/tools/adb#connect-to-a-device-over-wi-fi" target="_blank">here</a>.</li>
+</ul>
+<p><strong>Virtual device</strong></p>
+<ul>
+<li>Go to the <strong>AVD Manager</strong> in Android Studio and create a new virtual device. You can find more information <a href="https://developer.android.com/studio/run/managing-avds" target="_blank">here</a>.</li>
+</ul>
+<h2 is-upgraded>5.3.2 Run the preview</h2>
+<p>In the <strong>MainActivity.kt</strong> file, click on the <strong>Preview</strong> button next to the <strong>GreetingPreview</strong> function. This will open a preview of your app in the IDE. If you have a virtual or physical device connected, you can also run the app on your device.</p>
+<p class="image-container"><img src="img/f4a589373a570440.png"></p>
+<p>Now you can push your changes to your <strong>feature/setup-project</strong> branch with a clear commit message and create a pull request to merge your branch into the <strong>develop</strong> branch. Don&#39;t forget to add your buddy as a reviewer! 🕵️</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create your first components and screen" duration="0">
+        <p>Start creating some UI components and a screen to show them on.</p>
+<h2 is-upgraded>6.1 Create some buttons</h2>
+<ul>
+<li>Create a new package called <strong>shared</strong> in the <strong>ui</strong> package. (Not in the <strong>theme</strong> package)</li>
+<li>Create a new Kotlin file named <strong>Buttons</strong> to create our different buttons</li>
+<li>Create the following buttons: <ul>
+<li>PrimaryButton</li>
+<li>SecondaryButton</li>
+<li>TertiaryButton</li>
+<li>OutlinedButton</li>
+</ul>
+</li>
+<li>Show a preview of the buttons like this:</li>
+</ul>
+<p class="image-container"><img style="width: 400.00px" src="img/f0292cc02a71b62b.png"></p>
+<ul>
+<li>Here&#39;s a bit of code to get you going:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">@Preview
+@Composable
+fun ButtonsPreview() {
+  AppTheme {
+    Column(
+      //...
+    ) {
+      Buttons.Primary(
+        text = &#34;Primary&#34;,
+        Modifier.fillMaxWidth()
+      ) {}
+
+      //...
+    }
+  }
+}
+
+object Buttons {
+
+    @Composable
+    fun Primary(
+        text: String,
+        modifier: Modifier = Modifier,
+        onClick: () -&gt; Unit
+    ) {
+        Button(
+            modifier = modifier,
+            shape = RoundedCornerShape(5.dp),
+            colors = ButtonDefaults.buttonColors(
+                //...,
+                //...
+            ),
+            onClick = onClick
+        ) {
+            Text(text = text)
+        }
+    }
+}
+</code></pre>
+<ul>
+<li>Don&#39;t forget to use the <strong>Spacing</strong> you set up in the previous step!</li>
+</ul>
+<h2 is-upgraded>6.2 Create a screen</h2>
+<p>Because the task manager is seen as 1 Epic, create a new package called <strong>taskManager</strong> in the main package. In this package create a new package called <strong>landing</strong> for the landing screen.</p>
+
 
       </google-codelab-step>
     

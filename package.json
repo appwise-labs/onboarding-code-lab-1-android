@@ -4,7 +4,7 @@
   "description": "use nodemon to watch changes on md file, rebuild codelab on saves",
   "main": "index.js",
   "scripts": {
-    "build": "./claat-linux export -o dist index.md",
+    "build": "./claat export -o dist index.md && sed -i \"\" -e \"/body/i\\\\\n<link rel=\\\"stylesheet\\\" href=\\\"css/style.css\\\">\" dist/index/index.html",
     "serve": "nodemon --watch index.md --exec './claat export index.md && sed -i \"\" -e \"/body/i\\\\\n<link rel=\\\"stylesheet\\\" href=\\\"css/style.css\\\">\" index/index.html && http-server index'"
   },
   "repository": {
