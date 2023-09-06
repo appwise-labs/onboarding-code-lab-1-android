@@ -4,7 +4,7 @@
   "description": "use nodemon to watch changes on md file, rebuild codelab on saves",
   "main": "index.js",
   "scripts": {
-    "build": "./claat export -o dist index.md && sed -i \"\" -e \"/body/i\\\\\n<link rel=\\\"stylesheet\\\" href=\\\"css/style.css\\\">\" dist/index/index.html",
+    "build": "npm run merge-md-files && ./claat export -o dist index.md && sed -i \"\" -e \"/body/i\\\\\n<link rel=\\\"stylesheet\\\" href=\\\"css/style.css\\\">\" dist/index/index.html",
     "serve": "nodemon --watch pages/setup.md --exec 'npm run merge-md-files && ./claat export index.md && sed -i \"\" -e \"/body/i\\\\\n<link rel=\\\"stylesheet\\\" href=\\\"css/style.css\\\">\" index/index.html && http-server index'",
     "merge-md-files": "cat pages/setup.md pages/buttonsAndScreens.md pages/inputFieldsAndStates.md pages/networking.md pages/recap.md > index.md"
   },

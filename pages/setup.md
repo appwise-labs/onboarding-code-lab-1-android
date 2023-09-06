@@ -12,7 +12,7 @@ status: Draft
 
 Duration: 1:00:00
 
-<img width="200" src="index/img/intro/wisemen_logo.png" />
+<img width="200" src="index/img/intro/wisemen_logo_acid.png" />
 
 Hello fellow developer! Welcome to **Wisemen**, we are happy to have you on board! We want to make sure you are
 soon up to speed with the core of Android development and our way of working.
