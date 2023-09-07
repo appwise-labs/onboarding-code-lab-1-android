@@ -86,4 +86,4 @@ Don't forget to commit an push your changes with a proper commit message includi
 ### 8.4 Time for a PR
 * Create a pull request from your feature branch to the develop branch.
 * Add your buddy as a reviewer.
-* Drag your ticket in Jira from **In Development** to **Pull Request**.
+* Drag your ticket in Jira from **In Development** to **Pull Request**. 🚀
