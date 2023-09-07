@@ -37,12 +37,16 @@ all the files we need.
 3. Branching strategy
 4. **Pull Requests**
 
-### 4. Creating a first screen
+### 4. Creating your first app
 
-* How to use **Figma**
-* Write some code!
-* Write some more code!
-* Create your first **PR** (pull request)
+You will be creating a simple To-Do app. This app will have a few features that are written out in Jira.
+
+We are currently in a transition phase from **XML** to **Jetpack Compose**. Therefore we will be using **Jetpack
+Compose** for this app.
+Jetpack Compose is a new way of writing UI for Android apps in a more declarative way. You can find more
+information about Jetpack Compose [here](https://developer.android.com/jetpack/compose).
+Our Legacy projects are still written in XML, but as time comes you'll get to learn that as well! Our new projects
+are written in Jetpack Compose, therefore we will be using that for this Wiselab.
 
 ### Let's get started!
 
@@ -69,9 +73,9 @@ To access the designs you need to log in with your Wisemen account:
 
 * [Figma wireframes](https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?node-id=407-4095&t=2qdyy89lKwN7dFw3-0)
 
-### BitBucket repository
+### GitHub Repository
 
-*ToDo: Add link to BitBucket repository*
+* You can find the link to your repo on your [personal Confluence](https://appwise.atlassian.net/wiki/home) page.
 
 ### Jira access
 
@@ -83,11 +87,13 @@ Duration: 0:50:00
 
 ### 3.1 Create a new project
 
-Open Android Studio and create a new Compose project. You can name it Wiselab_Android_YOURNAME.
+Open Android Studio and create a new Compose project. You can name it Wiselab_Android_<<Name>>.
 
 ![](index/img/setup/new_compose_project.png)
 
-### 3.2 Link your project to BitBucket
+Make sure your package name is: **com.wiselab.wiselab_android_<<name>>**
+
+### 3.2 Link your project to GitHub
 
 You can find the link to your repo on your [personal Confluence](https://appwise.atlassian.net/wiki/home) page.
 
@@ -95,7 +101,9 @@ You can find the link to your repo on your [personal Confluence](https://appwise
 
 #### Use the terminal or IDE to link your project to BitBucket
 
-We will show you how to work with the ***terminal***. If you prefer to work with the ***IDE***, you can find the
+We recommend to use a GIT GUI like [SourceTree](https://www.sourcetreeapp.com/) or [Fork](https://git-fork.com/).
+As backup we will show you how to work with the ***terminal***. If you prefer to work with the ***IDE***, you can
+find the
 instructions [here](https://www.jetbrains.com/help/idea/set-up-a-git-repository.html#add-remote).
 
 * Open the terminal in Android Studio (bottom left corner)
@@ -112,12 +120,14 @@ From here on you can choose to use the terminal or the IDE to work with Git.
 We use the **Gitflow** branching strategy. You can find more information about this
 strategy [here](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
 
-* **master** branch: this branch contains the latest release of the app
-* **staging** branch: this branch is used send to the client for testing
-* **QA** branch: this branch is used to test the features before they are merged into the staging branch
 * **develop** branch: this branch contains the latest development changes
-* **feature/...** branches: these branches are used to develop new features for the upcoming release
-* **bugfix/...** branches: these branches are used to fix bugs in the app
+* **QA** branch: this branch is used to test the features before they are merged into the staging branch
+* **staging** branch: this branch is used send to the client for testing
+* **master** branch: this branch contains the latest release of the app
+
+* **feature/...** branches: these branches are used to develop new features for the upcoming release and are only
+  pushed to develop
+* **bugfix/...** branches: these branches are used to fix bugs in the app and are only pushed to develop
 
 Make sure you have created all 4 'standard' branches. You can do this by either using the terminal, IDE or a GUI
 tool like [SourceTree](https://www.sourcetreeapp.com/) or [Fork](https://git-fork.com/).
@@ -134,15 +144,20 @@ classes and functions that we use in all our projects. The latest version is als
 
 ### 4.1 Open the **build.gradle** file of your **project**
 
-* Add the following **plugin** to the top of the file:
-* Be sure to check for the latest versions!
+* Add the following **plugins** to the top of the file:
+* Be sure to check for the latest versions on the links above the plugins!
 * This is needed to use the Room dependency for our local database
 
 ```gradle.kts
 plugins {
-    id("com.android.application") version "8.1.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.10" apply false
-    id("com.google.devtools.ksp") version "1.8.10-1.0.9" apply false
+    // https://mvnrepository.com/artifact/com.android.application/com.android.application.gradle.plugin?repo=google
+    id("com.android.application") version "<<version>>" apply false
+    
+    // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android
+    id("org.jetbrains.kotlin.android") version "<<version>>" apply false
+    
+    https://github.com/google/ksp/releases
+    id("com.google.devtools.ksp") version "<<version>>" apply false
 }
 ```
 
@@ -174,26 +189,30 @@ plugins {
 }
 ```
 
-* Add the following **dependencies**
+* Add the following **dependencies**. The versions can be found in the url above the dependencies.
 
 ```gradle
     //Appwise core dependencies
-    implementation("com.github.appwise-labs.AndroidCore:core:1.4.3")
-    implementation("com.github.appwise-labs.AndroidCore:room:1.4.3")
-    implementation("com.github.appwise-labs.AndroidCore:networking:1.4.3")
+    //https://jitpack.io/#appwise-labs/AndroidCore
+    implementation("com.github.appwise-labs.AndroidCore:core:<<version>>")
+    implementation("com.github.appwise-labs.AndroidCore:room:<<version>>")
+    implementation("com.github.appwise-labs.AndroidCore:networking:<<version>>")
 
     //Room
-    implementation("androidx.room:room-runtime:2.5.2")
-    ksp("androidx.room:room-compiler:2.5.2")
+    //https://developer.android.com/jetpack/androidx/releases/room
+    implementation("androidx.room:room-runtime:<<version>>")
+    ksp("androidx.room:room-compiler:<<version>>")
     
     //Koin for dependency injection
-    implementation("io.insert-koin:koin-core:3.4.0")
-    implementation("io.insert-koin:koin-android:3.4.0")
-    implementation("io.insert-koin:koin-androidx-compose:3.4.0")
+    //https://insert-koin.io/docs/setup/koin/
+    implementation("io.insert-koin:koin-core:<<version>>")
+    implementation("io.insert-koin:koin-android:<<version>>")
+    implementation("io.insert-koin:koin-androidx-compose:<<version>>")
     
     //Compose navigation
-    implementation("io.github.raamcosta.compose-destinations:animations-core:1.8.38-beta")
-    ksp("io.github.raamcosta.compose-destinations:ksp:1.8.42-beta")
+    //https://github.com/raamcosta/compose-destinations
+    implementation("io.github.raamcosta.compose-destinations:animations-core:<<version>>")
+    ksp("io.github.raamcosta.compose-destinations:ksp:<<version>>")
 ```
 
 Now you can sync your project and you're ready to go! 🚀
@@ -204,6 +223,61 @@ Don't forget to push these changes to your **feature/setup-project** branch with
 ## Setup Project
 
 It's time to set some last few things before we can start coding!
+
+In case you
+forgot: [Figma wireframes](https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?node-id=407-4095&t=2qdyy89lKwN7dFw3-0)
+
+### 5.1 App class
+
+Let's start by creating the **App** class. This is the first class that is called when the app starts. We will use
+this class to set up our dependency injection and navigation in the future.
+Create a new class in the main package called **App** and add the following code:
+
+```kotlin
+
+class App : Application() {
+
+    companion object {
+        lateinit var instance: App
+            private set
+
+        fun isProxymanEnabled() = BuildConfig.DEBUG && BuildConfig.BUILD_TYPE != "release"
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        instance = this
+    }
+}
+```
+
+Let's explain this bit of code. The **App** class extends the **Application** class. This is the first class that
+is called when the app starts. We use the **companion object** to create a singleton of the **App** class. This way
+we can access the **App** class from anywhere in the app. We also use this class to check if we are in debug mode
+and if we are not in release mode. This is used to enable the Proxyman interceptor for debugging purposes. The
+instance of the **App** class is set in the **onCreate** function.
+
+* Create a new private function called initCore to set up the Android Core Library. This function will be called in
+  the **onCreate** function.
+* Add the following code to the **initCore** function:
+
+```kotlin
+CoreApp.init(this)
+    .apply {
+        if (BuildConfig.DEBUG) {
+            initializeErrorActivity(true)
+        }
+    }
+    .initializeLogger(getString(R.string.app_name), BuildConfig.DEBUG)
+    .build()
+```
+
+This code initializes the Android Core Library. We also initialize the error activity and the logger. The logger is
+used to log messages to the console. The error activity is used to show errors in the app. This is only enabled in
+debug mode.
+
+* Don't forget to add the **initCore** function to the **onCreate** function.
 
 ### 5.1 Theme
 
@@ -244,6 +318,28 @@ fun AppTheme(
     * BodySmall
     * Button
 
+* Let's create the first style together: Look at the figma design for the largest headline: "Mijn to do's". Click
+  on it until it is the only component selected. You can see the text style in the right panel. Use these values to
+  create the **HeadlineLarge** style:
+
+```kotlin
+
+object TextStyles {
+
+    val headlineLarge = TextStyle(
+        fontSize = 34.sp,
+        fontWeight = FontWeight.W700,
+        lineHeight = 41.sp,
+        letterSpacing = 0.37.sp
+    )
+}
+```
+
+* Note that we use the **Sp** unit for the font size, line height and letter spacing. This is because we want to
+  use the **Sp** unit for all our text styles. This way the text will scale with the system font size. Don't mind
+  the fontFamily, SF Pro Display is the default font on iOS. The color is not needed because we will set the color
+  in the theme.
+
 ### 5.3 Spacing
 
 * Add an **object**-file named **Spacing** to preset our different spacing values. 📏
@@ -269,13 +365,6 @@ object Spacing {
     val extraLarge: Dp = 40.dp
     val huge: Dp = 64.dp
 }
-// this is a composition local --> you can call it for all composables without the need to pass it all down
-val LocalSpacing = compositionLocalOf { Spacing }
-
-val MaterialTheme.spacing: Spacing
-    @Composable
-    @ReadOnlyComposable
-    get() = LocalSpacing.current
 ```
 
 ### 5.3 Check your first preview
