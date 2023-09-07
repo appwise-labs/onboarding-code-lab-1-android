@@ -333,6 +333,7 @@ object Spacing {
         <p>Start creating some UI components and a screen to show them on. Starting with the <a href="https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?type=design&node-id=455-5009&mode=design&t=a3AEuYp0dvS3MRfT-4" target="_blank">landing screen</a> where we can register or log in. We always name our branches to the Jira ticket. The first ticket we will work on is <strong>OB-1</strong>. Create a new branch called <code>feature/ob-1--landing-screen</code></p>
 <h2 is-upgraded>6.1 Create some buttons</h2>
 <ul>
+<li>Open the figma file and check the <strong>components used</strong> page. This is where you can find all the <a href="https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?type=design&node-id=877-1328&mode=dev" target="_blank">components used</a> in the design.</li>
 <li>Create a new package called <strong>shared</strong>. The full path should be  <strong>com.wiselab.«name».ui.shared</strong>.</li>
 <li>Create a new Kotlin file named <strong>Buttons</strong> in the <strong>Shared</strong> package to create our different buttons</li>
 <li>Create the following buttons: <ul>
@@ -403,7 +404,7 @@ object Buttons {
 <ul>
 <li>Next the <strong>preview</strong> is created, we always place these above the object:</li>
 </ul>
-<p>Make sure to check the modifiers we use here. The fillMaxWidth modifier makes sure the button takes up the full width of the screen. The background modifier makes sure the background color is the same as the background color of the app. The padding modifier makes sure there is some space between the buttons. The verticalArrangement makes sure the buttons are spaced out vertically.</p>
+<p>Make sure to check the modifiers we use here. The <code>fillMaxWidth</code> modifier makes sure the button takes up the full width of the screen. The <code>background</code> modifier makes sure the background color is the same as the background color of the app. The <code>padding</code> modifier makes sure there is some space between the buttons. The <code>verticalArrangement</code> makes sure the buttons are spaced out vertically.</p>
 <ul>
 <li>Now create the other buttons and show them in the preview.</li>
 <li>Commits linked to Jira tickets should always contain the ticket number. In this case <strong>OB-1</strong>. The commit message should look something like this: <strong>OB-1: Create button components</strong>.</li>
@@ -460,7 +461,7 @@ fun LandingScreen() {
     }
 }
 </code></pre>
-<p>Some explanation here: The <strong>Scaffold</strong> is a Composable that implements the basic material design visual layout. It has a top bar, bottom bar and a floating action button. We will be using this a lot in our projects. The <strong>LandingContent</strong> is passed as a parameter to the <strong>Scaffold</strong>. This is how we pass content to a Composable. At This moment the Scaffold is still experimental, that&#39;s why we need to add the <strong>@OptIn(ExperimentalMaterial3Api::class)</strong></p>
+<p>Some explanation here: The <strong>Scaffold</strong> is a Composable that implements the basic material design visual layout. It has a top bar, bottom bar and a floating action button. We will be using this a lot in our projects. The <strong>LandingContent</strong> is passed as a parameter to the <strong>Scaffold</strong>. This is how we pass content to a Composable. At This moment the Scaffold is still experimental, that&#39;s why we need to add the <code>@OptIn(ExperimentalMaterial3Api::class)</code></p>
 <h3 is-upgraded>6.2.3 Scaffold Padding</h3>
 <ul>
 <li>There is still an issue. The Scaffold must always pass a padding value to it&#39;s content. This is because the Scaffold has a top bar, bottom bar and a floating action button. We need to make sure the content is not hidden behind these.</li>
@@ -521,7 +522,67 @@ fun LandingContent(it: PaddingValues) {
       </google-codelab-step>
     
       <google-codelab-step label="Navigation" duration="0">
-        
+        <p>Let&#39;s add navigation to our app. We will use the <a href="https://github.com/raamcosta/compose-destinations" target="_blank">raamcosta compose destinations library</a> for this. This library is a wrapper around the navigation component. It makes it easier to use the navigation component with compose. It also adds some nice features like <strong>animations</strong> and <strong>deep linking</strong>. We already added the dependency in the setup of the project.</p>
+<h2 is-upgraded>7.1 Setup navigation</h2>
+<ul>
+<li>Create a new package called <strong>navigation</strong> in the <strong>onboarding</strong> package like this: <strong>com.wiselab.«name».onboarding.navigation</strong></li>
+<li>Make a new file called <strong>OnboardingNavGraph</strong> in the <strong>navigation</strong> package.</li>
+<li>Add following code to the file:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">import com.ramcosta.composedestinations.annotation.NavGraph
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+
+@RootNavGraph(start = true)
+@NavGraph
+annotation class OnboardingNavGraph(
+    val start: Boolean = false
+)
+</code></pre>
+<ul>
+<li>This is a <strong>NavGraph</strong>. It&#39;s a class that contains all the destinations of a navigation graph. The <strong>@RootNavGraph</strong> annotation tells the library that this is the root of the navigation graph. The <strong>@NavGraph</strong> annotation tells the library that this is a navigation graph. The <strong>start</strong> parameter tells the library that this is the start of the navigation graph. This means that this is the first screen that will be shown when the app starts.</li>
+<li>Open the <strong>LandingScreen</strong> file and add the 2 <strong>annotations</strong> to the <strong>LandingScreen</strong> composable function: <code>@Destination</code> and <code>@OnboardingNavGraph(start = true)</code></li>
+<li>The <strong>@Destination</strong> annotation tells the library that this is a destination. The <strong>@OnboardingNavGraph(start = true)</strong> annotation tells the library that this is the start of the navigation graph. This means that this is the first screen that will be shown when the app starts.</li>
+</ul>
+<h2 is-upgraded>7.2 Integrate in the MainActivity</h2>
+<ul>
+<li>Open the <strong>MainActivity</strong> file and remove the <strong>Greeting</strong> composable function with it&#39;s preview.</li>
+<li>Change the class so it looks like this:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            AppTheme {
+                val navController = rememberNavController()
+
+                Scaffold { paddingValues -&gt;
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(paddingValues)
+                    ) {
+                        DestinationsNavHost(
+                            navGraph = NavGraphs.onboarding,
+                            navController = navController
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<ul>
+<li>We use the <strong>Scaffold</strong> composable to create a basic material design visual layout. We will be using this a lot in our projects.</li>
+<li>The Box composable is a container that can contain multiple composable functions. We use it to place the <strong>DestinationsNavHost</strong> composable in it.</li>
+<li>The <strong>DestinationsNavHost</strong> composable is a composable function from the destinations library. It&#39;s a wrapper around the navigation component. It takes a <strong>navGraph</strong> and a <strong>navController</strong> as parameters. The <strong>navGraph</strong> is the navigation graph we created in the previous step. The <strong>navController</strong> is a controller that controls the navigation between the screens. We will use this later to navigate between screens.</li>
+</ul>
+<h2 is-upgraded>7.3 Run your app</h2>
+<p>In the top right of your IDE you can select the device you want to run your app on. Select a device and run the app configuration. If you can&#39;t find it, try clicking the arrow down to see all configurations like this:</p>
+<p class="image-container"><img alt="Run configuration" src="img/ea5b86c9c2e2d49f.png"></p>
+
 
       </google-codelab-step>
     

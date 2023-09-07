@@ -5,8 +5,11 @@ the [landing screen](https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboardin
 where we can register or log in. We always name our branches to the Jira ticket. The first ticket we will work on
 is **OB-1**. Create a new branch called `feature/ob-1--landing-screen`
 
+* Drag the Jira ticket to the **In Development** column.
+
 ### 6.1 Create some buttons
 
+* Open the figma file and check the **components used** page. This is where you can find all the [components used](https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?type=design&node-id=877-1328&mode=dev) in the design.
 * Create a new package called **shared**. The full path should be  **com.wiselab.<<name>>.ui.shared**.
 * Create a new Kotlin file named **Buttons** in the **Shared** package to create our different buttons
 * Create the following buttons:
