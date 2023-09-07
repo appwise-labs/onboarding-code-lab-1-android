@@ -7,7 +7,7 @@ is **OB-1**. Create a new branch called `feature/ob-1--landing-screen`
 
 * Drag the Jira ticket to the **In Development** column.
 
-### 6.1 Create some buttons
+### 7.1 Create some buttons
 
 * Open the figma file and check the **components used** page. This is where you can find all the [components used](https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?type=design&node-id=877-1328&mode=dev) in the design.
 * Create a new package called **shared**. The full path should be  **com.wiselab.<<name>>.ui.shared**.
@@ -93,7 +93,7 @@ makes sure the buttons are spaced out vertically.
 * Commits linked to Jira tickets should always contain the ticket number. In this case **OB-1**. The commit message
   should look something like this: **OB-1: Create button components**.
 
-### 6.2 Create a screen
+### 7.2 Create a screen
 
 The task manager is seen as 2 Epics, onboarding and todo's. create a new package **com.wiselab.<<name>>.onboarding**.
 In this package create a new package called **landing** for the landing screen. The full path should be **com.wiselab.<<name>>.onboarding.landing**.
@@ -110,7 +110,7 @@ In this package create a new package called **landing** for the landing screen. 
 
 <img width="400" src="index/img/buttonsAndScreens/landing_preview.png" />
 
-#### 6.2.1 Create the content
+#### 7.2.1 Create the content
 * Create a composable function called **LandingContent**. This is where we place all the content of the screen.
 * Because there are 2 buttons vertically aligned we will be using the **Column** Composable as previously explained.
 * The function will look something like this:
@@ -139,7 +139,7 @@ We use the **wrapContentHeight** modifier to make sure the column is only as hig
 We use the **padding** modifier to add some space between the buttons and the edge of the screen. and padding under the secondary button.
 There are still some things missing here, but we will come back at this shortly.
 
-#### 6.2.2 Create the screen
+#### 7.2.2 Create the screen
 * Now create the **LandingScreen** composable. This is where we place the content in a screen, this is the parent.
 * The function will look something like this:
 
@@ -158,7 +158,7 @@ It has a top bar, bottom bar and a floating action button. We will be using this
 The **LandingContent** is passed as a parameter to the **Scaffold**. This is how we pass content to a Composable.
 At This moment the Scaffold is still experimental, that's why we need to add the `@OptIn(ExperimentalMaterial3Api::class)`
 
-#### 6.2.3 Scaffold Padding
+#### 7.2.3 Scaffold Padding
 * There is still an issue. The Scaffold must always pass a padding value to it's content. This is because the Scaffold
   has a top bar, bottom bar and a floating action button. We need to make sure the content is not hidden behind these.
 * We can fix this by adding a parameter to our **LandingContent** function and using it like this:
@@ -183,7 +183,7 @@ fun LandingContent(it: PaddingValues) {
 ```
 Note that the Scaffold padding is always the first padding that is applied. A modifier is always applied from **top to bottom**.
 
-#### 6.2.4 Create the preview
+#### 7.2.4 Create the preview
 * Now create the **LandingScreenPreview** composable. This is where we show the screen in a preview. If you forgot how to create a preview, check the **ButtonsPreview**.
 * As you will see the buttons are not yet aligned at the bottom. We can fix this by adding a **Spacer** above the buttons like this:
 
@@ -210,7 +210,7 @@ fun LandingContent(it: PaddingValues) {
 ```
 The spacer will take up all the available space and push the buttons to the bottom. The [**weight** modifier](https://developer.android.com/jetpack/compose/modifiers#weight-in-row-and-column) is used to make sure the spacer takes up all the available space.
 
-#### 6.2.5 String extraction
+#### 7.2.5 String extraction
 * There is still 1 bad practise. Strings should never be hardcoded. We should always use a string resource. We can fix this by adding a string resource to the **strings.xml** file.
   The easiest way to do this is to right click on the string and select **Show Context Actions** and then **Extract string resource**. Do this for both buttons.
 * Use command + click (or windows + click) on the string to navigate to the string resources. Here you can change, add, delete and even translate strings.

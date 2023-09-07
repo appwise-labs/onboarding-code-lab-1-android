@@ -7,7 +7,7 @@ library is a wrapper around the navigation component. It makes it easier to use 
 compose. It also adds some nice features like **animations** and **deep linking**. We already added the dependency
 in the setup of the project.
 
-### 7.1 Setup navigation
+### 8.1 Setup navigation
 * Create a new package called **navigation** in the **onboarding** package like this: **com.wiselab.<<name>>.onboarding.navigation**
 * Make a new file called **OnboardingNavGraph** in the **navigation** package.
 * Add following code to the file:
@@ -33,7 +33,7 @@ annotation class OnboardingNavGraph(
   annotation tells the library that this is the start of the navigation graph. This means that this is the first screen
   that will be shown when the app starts.
 
-### 7.2 Integrate in the MainActivity
+### 8.2 Integrate in the MainActivity
 * Open the **MainActivity** file and remove the **Greeting** composable function with it's preview.
 * Change the class so it looks like this:
 
@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
   navigation graph we created in the previous step. The **navController** is a controller that controls the navigation
   between the screens. We will use this later to navigate between screens.
 
-### 7.3 Run your app
+### 8.3 Run your app
 In the top right of your IDE you can select the device you want to run your app on. Select a device and run the app
 configuration. If you can't find it, try clicking the arrow down to see all configurations like this:
 
@@ -83,7 +83,7 @@ configuration. If you can't find it, try clicking the arrow down to see all conf
 You should see the landing screen now! 🙌🏻
 Don't forget to commit an push your changes with a proper commit message including the ticket number!
 
-### 7.4 Time for a PR
+### 8.4 Time for a PR
 * Create a pull request from your feature branch to the develop branch.
 * Add your buddy as a reviewer.
 * Drag your ticket in Jira from **In Development** to **Pull Request**.
