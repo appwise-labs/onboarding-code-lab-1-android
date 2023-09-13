@@ -9,7 +9,8 @@ is **OB-1**. Create a new branch called `feature/ob-1--landing-screen`
 
 ### 7.1 Create some buttons
 
-* Open the figma file and check the **components used** page. This is where you can find all the [components used](https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?type=design&node-id=877-1328&mode=dev) in the design.
+* Open the figma file and check the **components used** page. This is where you can find all
+  the [components used](https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?type=design&node-id=877-1328&mode=dev) in the design.
 * Create a new package called **shared**. The full path should be  **com.wiselab.<<name>>.ui.shared**.
 * Create a new Kotlin file named **Buttons** in the **Shared** package to create our different buttons
 * Create the following buttons:
@@ -21,7 +22,8 @@ is **OB-1**. Create a new branch called `feature/ob-1--landing-screen`
 
 <img width="400" src="index/img/setup/button_preview.png" />
 
-Note that you can see the preview when clicking on the <img width="50" src="index/img/buttonsAndScreens/ide_preview_button.png" /> button in the top right corner of the IDE.
+Note that you can see the preview when clicking on the <img width="50" src="index/img/buttonsAndScreens/ide_preview_button.png" /> button in the top
+right corner of the IDE.
 
 * Here's a bit of code to get you going:
 
@@ -99,119 +101,141 @@ The task manager is seen as 2 Epics, onboarding and todo's. create a new package
 In this package create a new package called **landing** for the landing screen. The full path should be **com.wiselab.<<name>>.onboarding.landing**.
 
 * Create a new Kotlin file called **LandingScreen** in the **landing** package.
-* We like to split up our screens in minimal 3 parts:
-    * **Content**: this is where we place all the content of the screen
-    * **Screen**: this is where we place the content in a screen, this is the parent
-    * **Preview**: this is where we show the screen in a preview
+* We like to split up our screens in minimal 3 parts, we go in more detail about this in a future section. For now
+    * **Layout**: this is where we place all the content of the screen
+    * **Screen**: this is where we link our data and state to the layout
+    * **Preview**: this is where we show the layout in a preview
 * This is also the order we create them in. Note that this is not the order in the file. We always place the
-  preview above the screen and the screen above the content.
+  preview above the screen and the screen above the layout.
 
 * This is the preview we are working towards:
 
 <img width="400" src="index/img/buttonsAndScreens/landing_preview.png" />
 
-#### 7.2.1 Create the content
-* Create a composable function called **LandingContent**. This is where we place all the content of the screen.
+#### 7.2.1 Create the Layout
+
+* Create a composable function called **LandingLayout**. This is where we place all the content of the screen.
 * Because there are 2 buttons vertically aligned we will be using the **Column** Composable as previously explained.
 * The function will look something like this:
 
 ```kotlin
 @Composable
-fun LandingContent() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal = Spacing.medium)
-    ) {
-        Buttons.Primary(text = "Create an account", Modifier.fillMaxWidth()) {}
-        Buttons.Secondary(
-            text = "Log in",
-            Modifier
+fun LandingLayout() {
+    Scaffold {
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 58.dp)
-        ) {}
+                .wrapContentHeight()
+                .padding(horizontal = Spacing.medium)
+        ) {
+            Buttons.Primary(text = "Create an account", Modifier.fillMaxWidth()) {}
+            Buttons.Secondary(
+                text = "Log in",
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 58.dp)
+            ) {}
+        }
     }
 }
 ```
+
 We use the **fillMaxWidth** modifier to make sure the buttons take up the full width of the screen.
 We use the **wrapContentHeight** modifier to make sure the column is only as high as it's content.
 We use the **padding** modifier to add some space between the buttons and the edge of the screen. and padding under the secondary button.
-There are still some things missing here, but we will come back at this shortly.
 
-#### 7.2.2 Create the screen
-* Now create the **LandingScreen** composable. This is where we place the content in a screen, this is the parent.
+Some explanation about **Scaffold** : The **Scaffold** is a Composable that implements the basic material design visual layout.
+It has a top bar, bottom bar and a floating action button. We will be using this a lot in our projects. It is like a structured container for our
+screen.
+At This moment the Scaffold is still experimental, that's why we need to add the `@OptIn(ExperimentalMaterial3Api::class)`
+
+#### 7.2.2 Scaffold Padding
+
+* There is still an issue. The Scaffold must always pass a padding value to it's content. This is because the Scaffold
+  has a top bar, bottom bar and a floating action button. We need to make sure the content is not hidden behind these.
+* We can fix it like this:
+
+```kotlin 
+@Composable
+fun LandingLayout() {
+    Scaffold { contentPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(contentPadding)
+                .padding(horizontal = Spacing.medium)
+        ) {
+            Buttons.Primary(text = "Create an account", Modifier.fillMaxWidth()) {}
+            Buttons.Secondary(
+                text = "Log in",
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 58.dp)
+            ) {}
+        }
+    }
+}
+```
+
+Note that the Scaffold padding is always the first padding that is applied. A modifier is always applied from **top to bottom**.
+
+#### 7.2.3 Create the screen
+
+* Now create the **LandingScreen** composable. This is where we place the layout in a screen, this is the parent.
+* Here is where we will link our data to our view. We will explain this in a future section.
+* For now we will just call our LandingLayout function.
 * The function will look something like this:
 
 ```kotlin
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LandingScreen() {
-    Scaffold {
-        LandingContent()
-    }
+    LandingLayout()
 }
+
 ```
-
-Some explanation here: The **Scaffold** is a Composable that implements the basic material design visual layout.
-It has a top bar, bottom bar and a floating action button. We will be using this a lot in our projects.
-The **LandingContent** is passed as a parameter to the **Scaffold**. This is how we pass content to a Composable.
-At This moment the Scaffold is still experimental, that's why we need to add the `@OptIn(ExperimentalMaterial3Api::class)`
-
-#### 7.2.3 Scaffold Padding
-* There is still an issue. The Scaffold must always pass a padding value to it's content. This is because the Scaffold
-  has a top bar, bottom bar and a floating action button. We need to make sure the content is not hidden behind these.
-* We can fix this by adding a parameter to our **LandingContent** function and using it like this:
-
-```kotlin 
-@Composable
-fun LandingContent(it: PaddingValues) {
-  Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .wrapContentHeight()
-      .padding(it)
-      .padding(horizontal = Spacing.medium)
-  ) {
-    Buttons.Primary(text = "Create an account", Modifier.fillMaxWidth()) {}
-    Buttons.Secondary(text = "Log in",
-      Modifier
-        .fillMaxWidth()
-        .padding(bottom = 58.dp)) {}
-  }
-}
-```
-Note that the Scaffold padding is always the first padding that is applied. A modifier is always applied from **top to bottom**.
 
 #### 7.2.4 Create the preview
-* Now create the **LandingScreenPreview** composable. This is where we show the screen in a preview. If you forgot how to create a preview, check the **ButtonsPreview**.
+
+* Now create the **LandingScreenPreview** composable. This is where we show the screen in a preview. If you forgot how to create a preview, check
+  the **ButtonsPreview**.
 * As you will see the buttons are not yet aligned at the bottom. We can fix this by adding a **Spacer** above the buttons like this:
 
 ```kotlin
 @Composable
-fun LandingContent(it: PaddingValues) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(it)
-            .padding(horizontal = Spacing.medium)
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        Buttons.Primary(text = "Create an account", Modifier.fillMaxWidth()) {}
-        Buttons.Secondary(
-            text = "Log in",
-            Modifier
+fun LandingLayout() {
+    Scaffold { contentPadding ->
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 58.dp)
-        ) {}
+                .wrapContentHeight()
+                .padding(contentPadding)
+                .padding(horizontal = Spacing.medium)
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            Buttons.Primary(text = "Create an account", Modifier.fillMaxWidth()) {}
+            Buttons.Secondary(
+                text = "Log in",
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 58.dp)
+            ) {}
+        }
     }
 }
 ```
-The spacer will take up all the available space and push the buttons to the bottom. The [**weight** modifier](https://developer.android.com/jetpack/compose/modifiers#weight-in-row-and-column) is used to make sure the spacer takes up all the available space.
+
+The spacer will take up all the available space and push the buttons to the bottom. The [**
+weight** modifier](https://developer.android.com/jetpack/compose/modifiers#weight-in-row-and-column) is used to make sure the spacer takes up all the
+available space.
 
 #### 7.2.5 String extraction
-* There is still 1 bad practise. Strings should never be hardcoded. We should always use a string resource. We can fix this by adding a string resource to the **strings.xml** file.
-  The easiest way to do this is to right click on the string and select **Show Context Actions** and then **Extract string resource**. Do this for both buttons.
-* Use command + click (or windows + click) on the string to navigate to the string resources. Here you can change, add, delete and even translate strings.
+
+* There is still 1 bad practise. Strings should never be hardcoded. We should always use a string resource. We can fix this by adding a string
+  resource to the **strings.xml** file.
+  The easiest way to do this is to right click on the string and select **Show Context Actions** and then **Extract string resource**. Do this for
+  both buttons.
+* Use command + click (or windows + click) on the string to navigate to the string resources. Here you can change, add, delete and even translate
+  strings.
 * Don't forget to commit your changes with a proper commit message!
