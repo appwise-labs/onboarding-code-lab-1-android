@@ -4,8 +4,9 @@
   "description": "use nodemon to watch changes on md file, rebuild codelab on saves",
   "main": "index.js",
   "scripts": {
-    "build": "./claat-linux export -o dist index.md",
-    "serve": "nodemon --watch index.md --exec './claat export index.md && http-server index'"
+    "build": "npm run merge-md-files && ./claat export -o dist index.md && sed -i \"\" -e \"/body/i\\\\\n<link rel=\\\"stylesheet\\\" href=\\\"css/style.css\\\">\" dist/index/index.html",
+    "serve": "nodemon --watch pages/5_inputFieldsAndStates.md --watch pages/6_networking.md  --exec 'npm run merge-md-files && ./claat export index.md && sed -i \"\" -e \"/body/i\\\\\n<link rel=\\\"stylesheet\\\" href=\\\"css/style.css\\\">\" index/index.html && http-server index'",
+    "merge-md-files": "cat pages/1_setup.md pages/2_agile.md pages/3_buttonsAndScreens.md pages/4_navigation.md pages/5_inputFieldsAndStates.md pages/6_networking.md pages/recap.md > index.md"
   },
   "repository": {
     "type": "git",
