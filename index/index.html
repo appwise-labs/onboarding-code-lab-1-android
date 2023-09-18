@@ -334,7 +334,7 @@ object Spacing {
 <ul>
 <li>Drag the Jira ticket to the <strong>In Development</strong> column.</li>
 </ul>
-<h2 is-upgraded>6.1 Create some buttons</h2>
+<h2 is-upgraded>7.1 Create some buttons</h2>
 <ul>
 <li>Open the figma file and check the <strong>components used</strong> page. This is where you can find all the <a href="https://www.figma.com/file/hebgv4Qx8VanMAQkO1NFpa/Onboarding-to-do?type=design&node-id=877-1328&mode=dev" target="_blank">components used</a> in the design.</li>
 <li>Create a new package called <strong>shared</strong>. The full path should be  <strong>com.wiselab.«name».ui.shared</strong>.</li>
@@ -412,109 +412,118 @@ object Buttons {
 <li>Now create the other buttons and show them in the preview.</li>
 <li>Commits linked to Jira tickets should always contain the ticket number. In this case <strong>OB-1</strong>. The commit message should look something like this: <strong>OB-1: Create button components</strong>.</li>
 </ul>
-<h2 is-upgraded>6.2 Create a screen</h2>
+<h2 is-upgraded>7.2 Create a screen</h2>
 <p>The task manager is seen as 2 Epics, onboarding and todo&#39;s. create a new package <strong>com.wiselab.«name».onboarding</strong>. In this package create a new package called <strong>landing</strong> for the landing screen. The full path should be <strong>com.wiselab.«name».onboarding.landing</strong>.</p>
 <ul>
 <li>Create a new Kotlin file called <strong>LandingScreen</strong> in the <strong>landing</strong> package.</li>
-<li>We like to split up our screens in minimal 3 parts:<ul>
-<li><strong>Content</strong>: this is where we place all the content of the screen</li>
-<li><strong>Screen</strong>: this is where we place the content in a screen, this is the parent</li>
-<li><strong>Preview</strong>: this is where we show the screen in a preview</li>
+<li>We like to split up our screens in minimal 3 parts, we go in more detail about this in a future section. For now<ul>
+<li><strong>Layout</strong>: this is where we place all the content of the screen</li>
+<li><strong>Screen</strong>: this is where we link our data and state to the layout</li>
+<li><strong>Preview</strong>: this is where we show the layout in a preview</li>
 </ul>
 </li>
-<li>This is also the order we create them in. Note that this is not the order in the file. We always place the preview above the screen and the screen above the content.</li>
+<li>This is also the order we create them in. Note that this is not the order in the file. We always place the preview above the screen and the screen above the layout.</li>
 <li>This is the preview we are working towards:</li>
 </ul>
 <p class="image-container"><img style="width: 400.00px" src="img/dc4b0772e8520b03.png"></p>
-<h3 is-upgraded>6.2.1 Create the content</h3>
+<h3 is-upgraded>7.2.1 Create the Layout</h3>
 <ul>
-<li>Create a composable function called <strong>LandingContent</strong>. This is where we place all the content of the screen.</li>
+<li>Create a composable function called <strong>LandingLayout</strong>. This is where we place all the content of the screen.</li>
 <li>Because there are 2 buttons vertically aligned we will be using the <strong>Column</strong> Composable as previously explained.</li>
 <li>The function will look something like this:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">@Composable
-fun LandingContent() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(horizontal = Spacing.medium)
-    ) {
-        Buttons.Primary(text = &#34;Create an account&#34;, Modifier.fillMaxWidth()) {}
-        Buttons.Secondary(
-            text = &#34;Log in&#34;,
-            Modifier
+fun LandingLayout() {
+    Scaffold {
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 58.dp)
-        ) {}
+                .wrapContentHeight()
+                .padding(horizontal = Spacing.medium)
+        ) {
+            Buttons.Primary(text = &#34;Create an account&#34;, Modifier.fillMaxWidth()) {}
+            Buttons.Secondary(
+                text = &#34;Log in&#34;,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 58.dp)
+            ) {}
+        }
     }
 }
 </code></pre>
-<p>We use the <strong>fillMaxWidth</strong> modifier to make sure the buttons take up the full width of the screen. We use the <strong>wrapContentHeight</strong> modifier to make sure the column is only as high as it&#39;s content. We use the <strong>padding</strong> modifier to add some space between the buttons and the edge of the screen. and padding under the secondary button. There are still some things missing here, but we will come back at this shortly.</p>
-<h3 is-upgraded>6.2.2 Create the screen</h3>
+<p>We use the <strong>fillMaxWidth</strong> modifier to make sure the buttons take up the full width of the screen. We use the <strong>wrapContentHeight</strong> modifier to make sure the column is only as high as it&#39;s content. We use the <strong>padding</strong> modifier to add some space between the buttons and the edge of the screen. and padding under the secondary button.</p>
+<p>Some explanation about <strong>Scaffold</strong> : The <strong>Scaffold</strong> is a Composable that implements the basic material design visual layout. It has a top bar, bottom bar and a floating action button. We will be using this a lot in our projects. It is like a structured container for our screen. At This moment the Scaffold is still experimental, that&#39;s why we need to add the <code>@OptIn(ExperimentalMaterial3Api::class)</code></p>
+<h3 is-upgraded>7.2.2 Scaffold Padding</h3>
 <ul>
-<li>Now create the <strong>LandingScreen</strong> composable. This is where we place the content in a screen, this is the parent.</li>
+<li>There is still an issue. The Scaffold must always pass a padding value to it&#39;s content. This is because the Scaffold has a top bar, bottom bar and a floating action button. We need to make sure the content is not hidden behind these.</li>
+<li>We can fix it like this:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">@Composable
+fun LandingLayout() {
+    Scaffold { contentPadding -&gt;
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(contentPadding)
+                .padding(horizontal = Spacing.medium)
+        ) {
+            Buttons.Primary(text = &#34;Create an account&#34;, Modifier.fillMaxWidth()) {}
+            Buttons.Secondary(
+                text = &#34;Log in&#34;,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 58.dp)
+            ) {}
+        }
+    }
+}
+</code></pre>
+<p>Note that the Scaffold padding is always the first padding that is applied. A modifier is always applied from <strong>top to bottom</strong>.</p>
+<h3 is-upgraded>7.2.3 Create the screen</h3>
+<ul>
+<li>Now create the <strong>LandingScreen</strong> composable. This is where we place the layout in a screen, this is the parent.</li>
+<li>Here is where we will link our data to our view. We will explain this in a future section.</li>
+<li>For now we will just call our LandingLayout function.</li>
 <li>The function will look something like this:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LandingScreen() {
-    Scaffold {
-        LandingContent()
-    }
+    LandingLayout()
 }
+
 </code></pre>
-<p>Some explanation here: The <strong>Scaffold</strong> is a Composable that implements the basic material design visual layout. It has a top bar, bottom bar and a floating action button. We will be using this a lot in our projects. The <strong>LandingContent</strong> is passed as a parameter to the <strong>Scaffold</strong>. This is how we pass content to a Composable. At This moment the Scaffold is still experimental, that&#39;s why we need to add the <code>@OptIn(ExperimentalMaterial3Api::class)</code></p>
-<h3 is-upgraded>6.2.3 Scaffold Padding</h3>
-<ul>
-<li>There is still an issue. The Scaffold must always pass a padding value to it&#39;s content. This is because the Scaffold has a top bar, bottom bar and a floating action button. We need to make sure the content is not hidden behind these.</li>
-<li>We can fix this by adding a parameter to our <strong>LandingContent</strong> function and using it like this:</li>
-</ul>
-<pre><code language="language-kotlin" class="language-kotlin">@Composable
-fun LandingContent(it: PaddingValues) {
-  Column(
-    modifier = Modifier
-      .fillMaxWidth()
-      .wrapContentHeight()
-      .padding(it)
-      .padding(horizontal = Spacing.medium)
-  ) {
-    Buttons.Primary(text = &#34;Create an account&#34;, Modifier.fillMaxWidth()) {}
-    Buttons.Secondary(text = &#34;Log in&#34;,
-      Modifier
-        .fillMaxWidth()
-        .padding(bottom = 58.dp)) {}
-  }
-}
-</code></pre>
-<p>Note that the Scaffold padding is always the first padding that is applied. A modifier is always applied from <strong>top to bottom</strong>.</p>
-<h3 is-upgraded>6.2.4 Create the preview</h3>
+<h3 is-upgraded>7.2.4 Create the preview</h3>
 <ul>
 <li>Now create the <strong>LandingScreenPreview</strong> composable. This is where we show the screen in a preview. If you forgot how to create a preview, check the <strong>ButtonsPreview</strong>.</li>
 <li>As you will see the buttons are not yet aligned at the bottom. We can fix this by adding a <strong>Spacer</strong> above the buttons like this:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">@Composable
-fun LandingContent(it: PaddingValues) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(it)
-            .padding(horizontal = Spacing.medium)
-    ) {
-        Spacer(modifier = Modifier.weight(1f))
-        Buttons.Primary(text = &#34;Create an account&#34;, Modifier.fillMaxWidth()) {}
-        Buttons.Secondary(
-            text = &#34;Log in&#34;,
-            Modifier
+fun LandingLayout() {
+    Scaffold { contentPadding -&gt;
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 58.dp)
-        ) {}
+                .wrapContentHeight()
+                .padding(contentPadding)
+                .padding(horizontal = Spacing.medium)
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            Buttons.Primary(text = &#34;Create an account&#34;, Modifier.fillMaxWidth()) {}
+            Buttons.Secondary(
+                text = &#34;Log in&#34;,
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 58.dp)
+            ) {}
+        }
     }
 }
 </code></pre>
-<p>The spacer will take up all the available space and push the buttons to the bottom. The <a href="https://developer.android.com/jetpack/compose/modifiers#weight-in-row-and-column" target="_blank"><strong>weight</strong> modifier</a> is used to make sure the spacer takes up all the available space.</p>
-<h3 is-upgraded>6.2.5 String extraction</h3>
+<p>The spacer will take up all the available space and push the buttons to the bottom. The <a href="https://developer.android.com/jetpack/compose/modifiers#weight-in-row-and-column" target="_blank">** weight** modifier</a> is used to make sure the spacer takes up all the available space.</p>
+<h3 is-upgraded>7.2.5 String extraction</h3>
 <ul>
 <li>There is still 1 bad practise. Strings should never be hardcoded. We should always use a string resource. We can fix this by adding a string resource to the <strong>strings.xml</strong> file. The easiest way to do this is to right click on the string and select <strong>Show Context Actions</strong> and then <strong>Extract string resource</strong>. Do this for both buttons.</li>
 <li>Use command + click (or windows + click) on the string to navigate to the string resources. Here you can change, add, delete and even translate strings.</li>
@@ -526,7 +535,7 @@ fun LandingContent(it: PaddingValues) {
     
       <google-codelab-step label="Navigation" duration="0">
         <p>Let&#39;s add navigation to our app. We will use the <a href="https://github.com/raamcosta/compose-destinations" target="_blank">raamcosta compose destinations library</a> for this. This library is a wrapper around the navigation component. It makes it easier to use the navigation component with compose. It also adds some nice features like <strong>animations</strong> and <strong>deep linking</strong>. We already added the dependency in the setup of the project.</p>
-<h2 is-upgraded>7.1 Setup navigation</h2>
+<h2 is-upgraded>8.1 Setup navigation</h2>
 <ul>
 <li>Create a new package called <strong>navigation</strong> in the <strong>onboarding</strong> package like this: <strong>com.wiselab.«name».onboarding.navigation</strong></li>
 <li>Make a new file called <strong>OnboardingNavGraph</strong> in the <strong>navigation</strong> package.</li>
@@ -546,7 +555,7 @@ annotation class OnboardingNavGraph(
 <li>Open the <strong>LandingScreen</strong> file and add the 2 <strong>annotations</strong> to the <strong>LandingScreen</strong> composable function: <code>@Destination</code> and <code>@OnboardingNavGraph(start = true)</code></li>
 <li>The <strong>@Destination</strong> annotation tells the library that this is a destination. The <strong>@OnboardingNavGraph(start = true)</strong> annotation tells the library that this is the start of the navigation graph. This means that this is the first screen that will be shown when the app starts.</li>
 </ul>
-<h2 is-upgraded>7.2 Integrate in the MainActivity</h2>
+<h2 is-upgraded>8.2 Integrate in the MainActivity</h2>
 <ul>
 <li>Open the <strong>MainActivity</strong> file and remove the <strong>Greeting</strong> composable function with it&#39;s preview.</li>
 <li>Change the class so it looks like this:</li>
@@ -582,22 +591,294 @@ annotation class OnboardingNavGraph(
 <li>The Box composable is a container that can contain multiple composable functions. We use it to place the <strong>DestinationsNavHost</strong> composable in it.</li>
 <li>The <strong>DestinationsNavHost</strong> composable is a composable function from the destinations library. It&#39;s a wrapper around the navigation component. It takes a <strong>navGraph</strong> and a <strong>navController</strong> as parameters. The <strong>navGraph</strong> is the navigation graph we created in the previous step. The <strong>navController</strong> is a controller that controls the navigation between the screens. We will use this later to navigate between screens.</li>
 </ul>
-<h2 is-upgraded>7.3 Run your app</h2>
+<h2 is-upgraded>8.3 Run your app</h2>
 <p>In the top right of your IDE you can select the device you want to run your app on. Select a device and run the app configuration. If you can&#39;t find it, try clicking the arrow down to see all configurations like this:</p>
 <p class="image-container"><img alt="Run configuration" src="img/ea5b86c9c2e2d49f.png"></p>
 <p>You should see the landing screen now! 🙌🏻 Don&#39;t forget to commit an push your changes with a proper commit message including the ticket number!</p>
-<h2 is-upgraded>7.4 Time for a PR</h2>
+<h2 is-upgraded>8.4 Time for a PR</h2>
 <ul>
 <li>Create a pull request from your feature branch to the develop branch.</li>
 <li>Add your buddy as a reviewer.</li>
-<li>Drag your ticket in Jira from <strong>In Development</strong> to <strong>Pull Request</strong>.</li>
+<li>Drag your ticket in Jira from <strong>In Development</strong> to <strong>Pull Request</strong>. 🚀## Working with states</li>
 </ul>
+<p>Now that you know how to make your first screen, we can start working with states. To work with states we first need to understand how Composable functions work.</p>
+<h2 is-upgraded>9.1 Composition and recomposition</h2>
+<p>A basic <strong>Composable function</strong> with no parameters will never change how it is drawn. This implies that the view is never redrawn, unless the parent Composable function is redrawn. When a Composable function is redrawn, it is called <strong>recomposition</strong>. One way to trigger recomposition is triggered is when a Composable function is called with different parameters. For instance if we have a Composable function that takes a String as a parameter, and we call it with the String &#34;Hello World&#34;, and then we call it again with the String &#34;Hello Wisemen&#34;, the Composable function will be recomposed. If we want to trigger recomposition without changing the parameters, to add increased functionality, we need to use <strong>state</strong>.</p>
+<h2 is-upgraded>9.2 State</h2>
+<p>A State is a way to <strong>store data</strong> in a Composable function. When the state changes, the Composable function is recomposed. A basic way to create a state is:</p>
+<pre><code language="language-kotlin" class="language-kotlin">var state by remember { mutableStateOf(&#34;Hello World&#34;) }
+</code></pre>
+<p>Here we created a state that holds a String. The state is initialized with the value &#34;Hello World&#34;. The state is <strong>mutable</strong>, which triggers recomposition of the views using this value as parameter. The <strong>remember</strong> function is used to make sure the state is not recreated every time the Composable function is recomposed. This is important because if the state is recreated, the value is reset to the initial value.</p>
+<h2 is-upgraded>9.3 TextField</h2>
+<p>The best way to learn how to work with states is to work with a <code>TextField</code>. Like we did for the buttons, we will create a new file called ** EditText.kt**. Here you can create your basic edit texts that can be reused in the future. Create a basic EditText like this:</p>
+<pre><code language="language-kotlin" class="language-kotlin">@Composable
+fun EditText(
+    modifier: Modifier = Modifier
+) {
+    var input = &#34;&#34;
+
+    TextField(
+        value = input,
+        onValueChange = { input = it },
+        modifier = modifier
+    )
+}
+</code></pre>
+<p>When you run this preview and try to type in this textField, you see that nothing happens. This is because the parameters of the EditText are never changed and the composable function is not smart enough to know that the input variable is changed. To fix this we need to use state. Change the EditText to this:</p>
+<pre><code language="language-kotlin" class="language-kotlin">@Composable
+fun EditText(
+    modifier: Modifier = Modifier
+) {
+    var input by remember { mutableStateOf(&#34;&#34;) }
+
+    TextField(
+        value = input,
+        onValueChange = { input = it },
+        modifier = modifier
+    )
+}
+</code></pre>
+<p>Now when you run the preview and type in the TextField, you see that the text is updated. This is because the state is changed and the Composable function is recomposed. <strong>IT LIVES</strong> 🎉</p>
+<h2 is-upgraded>9.4 Stateless first and state hoisting</h2>
+<p>When working with states, it is important to keep your Composable functions stateless as much as possible. As mentioned earlier, a Composable function is recomposed when the state changes. If your UI gets more complex, and you use more function hierarchies with all their different states, it can become hard to keep track of all the states. And also it can lead to <strong>unwanted recompositions</strong> an because of that a <strong>bad performance</strong>. This also breaks the &#34;single source of responsibility&#34; principle which can lead to bug-prone code. To prevent this, we can use state hoisting. State hoisting is a way to move the state to the parent Composable function.</p>
+<p>Let&#39;s improve our EditText with state hoisting so it follows this principle.</p>
+<pre><code language="language-kotlin" class="language-kotlin">@Composable
+fun EditText(
+    modifier: Modifier = Modifier,
+    input: String,
+    onInputChanged: (String) -&gt; Unit
+) {
+    TextField(
+        value = input,
+        onValueChange = onInputChanged,
+        modifier = modifier
+    )
+}
+
+
+@Composable
+fun ComposableUsingEditText() {
+    var input by remember { mutableStateOf(&#34;&#34;) }
+
+    EditText(
+        input = input,
+        onInputChanged = { input = it }
+    )
+}
+</code></pre>
+<p>Now the EditText is stateless and the state is hoisted to the parent Composable function. If you do this for all your Composable functions, you will have a better performance and bugs will be easier to find.</p>
+<h2 is-upgraded>9.5. Exercise: Finishing the component library</h2>
+<p>Now that you know how to style your Composables and how to work with states, you can finish the component library.</p>
+<p>Keep these principles in mind:</p>
+<ul>
+<li>Make sure to create a new file for every type of component you create. This way you can reuse them in the future and you don&#39;t have to restyle them every time.</li>
+<li>Remember to add the modifier parameter to your custom views so they are easier to lay out in the future.</li>
+<li>Make sure to use state hoisting when working with states.</li>
+<li>Use previews to test your components handling of different states.</li>
+</ul>
+<p>After you are finished, make a new PR and ask your buddy to review it. 🚀</p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Working with states" duration="0">
-        
+      <google-codelab-step label="MVVM and screen structure" duration="0">
+        <p>Before we start building our screens, we need to understand how we structure our screens and how we use MVVM. More complex screens that need to fetch data from the backend or database and manipulate it, need to be structured in a way that is easy to understand and maintain.</p>
+<h2 is-upgraded>10.1 MVVM</h2>
+<p>MVVM stands for Model-View-ViewModel. It consists of three parts:</p>
+<ul>
+<li><strong>Model</strong>: The data model that is used in the screen. For this we use repositories as a data source. More on this later when we start with networking.</li>
+<li><strong>View</strong>: The UI of the screen. This is the Composable function that is used to draw the screen. This you know already.</li>
+<li><strong>ViewModel</strong>: The logic of the screen. This is the class that holds the logic of the screen. It can be used to fetch data from the backend or database, manipulate the data and pass it to the view.</li>
+</ul>
+<h2 is-upgraded>10.2 ViewModel</h2>
+<p>As mentioned above, this is the class that holds the logic of the screen. Since we want to keep the data manipulation and the UI separate, we have some rules for the communication between the ViewModel and the View.</p>
+<ul>
+<li>The ViewModel should never know about the View. This means that the ViewModel should not have any references to the View.</li>
+<li>Any data that needs to be manipulated should be managed here, not in the View.</li>
+<li>The data that is passed to the View should be immutable. This means that the View should not be able to change the data.</li>
+<li>If the data needs to be changed, it should be done in the ViewModel.</li>
+</ul>
+<h2 is-upgraded>10.3 Screen structure</h2>
+<p>Lets look at the image below to see the whole picture of the communication between the View and the ViewModel.</p>
+<p class="image-container"><img src="img/2176bbf0e51fe0ea.png"></p>
+<p>We know, the whole picture is a little overwhelming. But don&#39;t worry, we will go through it step by step.</p>
+<p>For naming, keep in mind, all these classes work in tandem to create a screen. So we will name them after the screen they are used in. For instance if we create a login screen, we will have a LoginScreen, LoginViewModel, LoginUiState, LoginActions and so on.</p>
+<h3 is-upgraded>10.3.1 Screen.kt (View)</h3>
+<p>Here we have the View layer of our screen. This consist of at least 3 composable functions with their own responsibilities: Screen, Layout and Preview</p>
+<pre><code language="language-kotlin" class="language-kotlin">@Composable
+fun Screen(
+    navController: NavController,
+    viewModel: ViewModel = koinViewModel()
+) {
+    // Collect data from the ViewModel to populate the layout
+    val uiState by viewModel.uiState.collectAsState()
+
+    // Establish links between UI events and the navController
+    LaunchedEffect(viewModel) {
+        viewModel.eventFlow.collect { event: UiEvent -&gt;
+            when (event) {
+                is UiEvent.NavigateToNext -&gt; navController.navigate(NextDestination)
+                is UiEvent.ShowDialog -&gt; // show dialog
+            }
+        }
+    }
+
+    // Link the uiState and action handler to the layout
+    Layout(
+        state = uiState,
+        onAction = viewModel::onAction,
+    )
+}
+</code></pre>
+<p>The <code>Screen</code> function is a crucial part of your UI layer (View) in Jetpack Compose. It serves as the entry point for rendering your screen&#39;s content. Here are the key aspects of this function:</p>
+<ul>
+<li>Parameters <ul>
+<li><code>NavController</code>: The navigation controller used for navigating between screens.</li>
+<li><code>ViewModel</code>: An instance of the ViewModel associated with this screen. We use the dependency injection library Koin to inject the ViewModel.</li>
+</ul>
+</li>
+<li>Function <ul>
+<li>Collects data from the ViewModel to populate the layout.</li>
+<li>Establishes links between UI events and the <code>navController</code>.</li>
+<li>Links actions of the ViewModel to the layout components.</li>
+</ul>
+</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">@Composable
+fun Layout(
+    state: UiState,
+    onAction: (Action) -&gt; Unit
+) {
+    // Layout components
+}
+</code></pre>
+<p>The <code>Layout</code> function is responsible for defining the structure of your screen&#39;s layout. It plays a central role in rendering the UI. Here&#39;s what you need to know about it:</p>
+<ul>
+<li>Parameters <ul>
+<li><code>state: UiState</code>: Represents the current state of the screen&#39;s UI.</li>
+<li><code>onAction: (Action) -> Unit</code>: A function used to handle UI actions.</li>
+</ul>
+</li>
+<li>Function <ul>
+<li>Displays the UI components based on the provided <code>state</code>.</li>
+<li>Triggers actions based on user interactions.</li>
+<li>Also used for preview and testing purposes.</li>
+</ul>
+</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">@Preview
+@Composable
+fun Preview() {
+    AppTheme {
+        Layout(
+            state = UiState(),
+            onAction = {}
+        )
+    }
+}
+</code></pre>
+<p>The <code>Preview</code> function provides a simple, placeholder implementation of the <code>Layout</code> with a default state. It&#39;s useful for previewing your layout during development.</p>
+<h3 is-upgraded>10.3.2 ViewModel.kt (ViewModel)</h3>
+<p>The <code>ViewModel</code> class is a critical component in managing the state and behavior of your UI.</p>
+<pre><code language="language-kotlin" class="language-kotlin">class ViewModel(
+    private val repository: Repository,
+    saveStateHandle: SavedStateHandle
+) : ViewModel() {
+
+    // Extracts navigation arguments from the SavedStateHandle to receive data from the previous screen
+    private val args = savedStateHandle.navArgs&lt;NavArgs&gt;()
+
+    // The single source of the truth for the UI state
+    var state by mutableStateOf(UiState())
+        // The setter is private to prevent external modification
+        private set
+
+    // A channel for sending events to the UI
+    private val eventChannel = Channel&lt;UiEvent&gt;()
+
+    // The channel is exposed as a flow to expose a read-only interface
+    val eventFlow = eventChannel.receiveAsFlow()
+
+    // The entry point for UI actions to be handled by the ViewModel
+    fun onAction(action: Action) {
+        when (action) {
+            is Action.OnNextClicked -&gt; eventChannel.trySend(UiEvent.NavigateToNext)
+            is Action.OnTextChanged -&gt; state = state.copy(text = action.text)
+            is Action.Save -&gt; repository.save(state.text)
+        }
+    }
+}
+</code></pre>
+<h4 is-upgraded>Constructor</h4>
+<ul>
+<li>Repositories are injected into the <code>ViewModel</code> via Koin.</li>
+<li><code>savedStateHandle</code>: An instance of <code>SavedStateHandle</code> is injected via Koin, allowing for the preservation of UI state during configuration changes.</li>
+</ul>
+<h4 is-upgraded>private val args = savedStateHandle.navArgs()</h4>
+<ul>
+<li>This code snippet extracts navigation arguments from the <code>SavedStateHandle</code> to facilitate data exchange between screens during navigation.</li>
+</ul>
+<h4 is-upgraded>var state by mutableStateOf(UiState())</h4>
+<ul>
+<li>This variable is the single source of truth for the current UI state.</li>
+<li>It is read-only for external sources, ensuring data consistency and reducing bugs.</li>
+</ul>
+<h4 is-upgraded>private val eventChannel = Channel()</h4>
+<ul>
+<li>An event channel for sending UI events.</li>
+<li>Exposes <code>eventFlow</code> to collect navigation events triggered by the ViewModel.</li>
+</ul>
+<h4 is-upgraded>fun onAction(action: Action)</h4>
+<ul>
+<li>Handles UI actions triggered by user interactions.</li>
+<li>Updates the UI state as necessary.</li>
+<li>Communicates changes to the Data layer when needed.</li>
+<li>Sends UI events through the event channel.</li>
+</ul>
+<h3 is-upgraded>10.3.3 UiState.kt</h3>
+<pre><code language="language-kotlin" class="language-kotlin">data class UiState(
+    val text: String = &#34;&#34;,
+    val isLoading: Boolean = false,
+    val error: String = &#34;&#34;,
+)
+</code></pre>
+<ul>
+<li><code>UiState</code> represents the current and immutable state of the screen.</li>
+<li>Immutability is crucial for ensuring the reliability and predictability of the Compose composition process.</li>
+<li>When you need to update the state, create a new state instance based on the current one rather than modifying the fields directly.</li>
+</ul>
+<h3 is-upgraded>10.3.4 UiEvent.kt</h3>
+<pre><code language="language-kotlin" class="language-kotlin">sealed class UiEvent {
+    object NavigateToNext : UiEvent()
+    data class ShowDialog(val message: String) : UiEvent()
+}
+</code></pre>
+<ul>
+<li><code>UiEvent</code> represents various types of events that need to be handled at the View layer.</li>
+<li>These events are often used to trigger navigations, animations, or display dialogs.</li>
+<li>Fired by the ViewModel and handled by the UI.</li>
+</ul>
+<h3 is-upgraded>10.3.5 Action.kt</h3>
+<pre><code language="language-kotlin" class="language-kotlin">sealed class Action {
+    object OnNextClicked : Action()
+    data class OnTextChanged(val text: String) : Action()
+    object Save : Action()
+}
+</code></pre>
+<ul>
+<li><code>Action</code> represents user-initiated actions from the UI layer.</li>
+<li>These actions are fired by the UI and handled by the ViewModel.</li>
+</ul>
+<h3 is-upgraded>10.3.6 NavArgs.kt</h3>
+<pre><code language="language-kotlin" class="language-kotlin">data class NavArgs(
+    val id: String = &#34;-1&#34;
+)
+</code></pre>
+<ul>
+<li><code>NavArgs</code> is a typed class that holds data passed between screens during navigation.</li>
+<li>This data can be extracted from the <code>SavedStateHandle</code> within the ViewModel.</li>
+</ul>
+
 
       </google-codelab-step>
     
