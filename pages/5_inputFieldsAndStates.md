@@ -126,13 +126,13 @@ After you are finished, make a new PR and ask your buddy to review it. 🚀
 
 ## MVVM and screen structure
 
-Before we start building our screens, we need to understand how we structure our screens and how we use MVVM.
+Before we start building our screens, we need to understand how we structure our screens and how we use **MVVM**.
 More complex screens that need to fetch data from the backend or database and manipulate it, need to be structured in a way that is easy to understand
 and maintain.
 
 ### 10.1 MVVM
 
-MVVM stands for Model-View-ViewModel. It consists of three parts:
+MVVM stands for **Model-View-ViewModel**. It consists of three parts:
 
 - **Model**: The data model that is used in the screen. For this we use repositories as a data source. More on this later when we start with
   networking.
@@ -142,12 +142,12 @@ MVVM stands for Model-View-ViewModel. It consists of three parts:
 
 ### 10.2 ViewModel
 
-As mentioned above, this is the class that holds the logic of the screen.
-Since we want to keep the data manipulation and the UI separate, we have some rules for the communication between the ViewModel and the View.
+As mentioned above, this is the class that holds the **logic** of the screen.
+Since we want to keep the **data manipulation and the UI separate**, we have some rules for the communication between the ViewModel and the View.
 
 - The ViewModel should never know about the View. This means that the ViewModel should not have any references to the View.
 - Any data that needs to be manipulated should be managed here, not in the View.
-- The data that is passed to the View should be immutable. This means that the View should not be able to change the data.
+- The data that is passed to the View should be **immutable**. This means that the View should not be able to change the data.
 - If the data needs to be changed, it should be done in the ViewModel.
 
 ### 10.3 Screen structure
@@ -197,7 +197,7 @@ It serves as the entry point for rendering your screen's content. Here are the k
 
 - Parameters
     - `NavController`: The navigation controller used for navigating between screens.
-    - `ViewModel`: An instance of the ViewModel associated with this screen. We use the dependency injection library Koin to inject the ViewModel.
+    - `ViewModel`: An instance of the ViewModel associated with this screen. We use the [dependency injection](https://developer.android.com/training/dependency-injection) library Koin to inject the ViewModel.
 - Function
     - Collects data from the ViewModel to populate the layout.
     - Establishes links between UI events and the `navController`.
@@ -275,31 +275,31 @@ class ViewModel(
 }
 ```
 
-##### Constructor
+##### **Constructor**
 
 - Repositories are injected into the `ViewModel` via Koin.
 - `savedStateHandle`: An instance of `SavedStateHandle` is injected via Koin, allowing for the preservation of UI state during configuration changes.
 
-##### private val args = savedStateHandle.navArgs<NavArgs>()
+##### **private val args = savedStateHandle.navArgs<NavArgs>()**
 
 - This code snippet extracts navigation arguments from the `SavedStateHandle` to facilitate data exchange between screens during navigation.
 
-##### var state by mutableStateOf(UiState())
+##### **var state by mutableStateOf(UiState())**
 
 - This variable is the single source of truth for the current UI state.
 - It is read-only for external sources, ensuring data consistency and reducing bugs.
 
-##### private val eventChannel = Channel<UiEvent>()
+##### **private val eventChannel = Channel<UiEvent>()**
 
 - An event channel for sending UI events.
 - Exposes `eventFlow` to collect navigation events triggered by the ViewModel.
 
-##### fun onAction(action: Action)
+##### **fun onAction(action: Action)**
 
-- Handles UI actions triggered by user interactions.
+- Handles UI actions triggered by **user interactions**.
 - Updates the UI state as necessary.
 - Communicates changes to the Data layer when needed.
-- Sends UI events through the event channel.
+- Sends **UI events** through the event channel.
 
 #### 10.3.3 UiState.kt
 
@@ -312,7 +312,7 @@ data class UiState(
 ```
 
 - `UiState` represents the current and immutable state of the screen.
-- Immutability is crucial for ensuring the reliability and predictability of the Compose composition process.
+- **Immutability** is crucial for ensuring the **reliability and predictability** of the Compose composition process.
 - When you need to update the state, create a new state instance based on the current one rather than modifying the fields directly.
 
 #### 10.3.4 UiEvent.kt
