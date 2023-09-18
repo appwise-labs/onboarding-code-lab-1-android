@@ -10,8 +10,6 @@ status: Draft
 
 ## What you'll learn: overview
 
-Duration: 1:00:00
-
 <img width="200" src="index/img/intro/wisemen_logo_acid.png" />
 
 Hello fellow developer! Welcome to **Wisemen**, we are happy to have you on board! We want to make sure you are
@@ -54,8 +52,6 @@ are written in Jetpack Compose, therefore we will be using that for this Wiselab
 
 ## What you need: Prerequisites
 
-Duration: 0:55:00
-
 Before we start, make sure you have everything you need to complete this **WiseLab**. You will need:
 
 ### Android Studio
@@ -82,8 +78,6 @@ To access the designs you need to log in with your Wisemen account:
 *ToDo: Add link to Jira*
 
 ## Create the project
-
-Duration: 0:50:00
 
 ### 3.1 Create a new project
 
@@ -135,8 +129,6 @@ tool like [SourceTree](https://www.sourcetreeapp.com/) or [Fork](https://git-for
 Now checkout the **develop** branch and create a new feature branch called **feature/setup-project**.
 
 ## Add the Android Core Library
-
-Duration: 0:40:00
 
 Now that you have created your project, it's time to add
 our [Android Core Library](https://github.com/appwise-labs/AndroidCore)! This library contains a lot of useful
@@ -258,6 +250,8 @@ we can access the **App** class from anywhere in the app. We also use this class
 and if we are not in release mode. This is used to enable the Proxyman interceptor for debugging purposes. The
 instance of the **App** class is set in the **onCreate** function.
 
+#### 5.1.1 Init Core
+
 * Create a new private function called initCore to set up the Android Core Library. This function will be called in
   the **onCreate** function.
 * Add the following code to the **initCore** function:
@@ -278,6 +272,22 @@ used to log messages to the console. The error activity is used to show errors i
 debug mode.
 
 * Don't forget to add the **initCore** function to the **onCreate** function.
+
+#### 5.1.2 Init Koin
+[Koin](https://github.com/InsertKoinIO/koin) is our [dependency injection](https://developer.android.com/training/dependency-injection) library.
+We use this library to inject our viewmodels in our composables. This way we can easily mock our viewmodels in our tests.
+
+* Create a new private function called initKoin to set up Koin. This function will be called in the **onCreate** function.
+* Add the following code to the **initKoin** function:
+
+```kotlin
+startKoin {
+  androidLogger(Level.DEBUG)
+  //this is so when you want to inject app context this determines where to get it
+  androidContext(this@App)
+  modules(appModule)
+}
+```
 
 ### 5.1 Theme
 
