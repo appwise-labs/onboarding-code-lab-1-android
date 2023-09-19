@@ -148,7 +148,7 @@ plugins {
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android
     id("org.jetbrains.kotlin.android") version "<<version>>" apply false
     
-    https://github.com/google/ksp/releases
+    //https://github.com/google/ksp/releases
     id("com.google.devtools.ksp") version "<<version>>" apply false
 }
 ```
@@ -273,11 +273,53 @@ debug mode.
 
 * Don't forget to add the **initCore** function to the **onCreate** function.
 
-#### 5.1.2 Init Koin
-[Koin](https://github.com/InsertKoinIO/koin) is our [dependency injection](https://developer.android.com/training/dependency-injection) library.
-We use this library to inject our viewmodels in our composables. This way we can easily mock our viewmodels in our tests.
+#### 5.1.2 Init Database
+Create a new package called **com.wiselab.<<name>>.data**. This is where we will put all our data related classes.
+In this package create a new package called **com.wiselab.<<name>>.data.database**.
 
-* Create a new private function called initKoin to set up Koin. This function will be called in the **onCreate** function.
+* Create a new class called **AppDatabase** in the **database** package. This class will be used to create our local
+  database. Add the following code to the **Database** class:
+
+```kotlin
+@Database(
+    entities = [],
+    version = 1,
+    exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
+
+    companion object {
+        const val DATABASE_NAME = "todoApp.db"
+    }
+}
+```
+
+
+#### 5.1.3 Init Koin
+[Koin](https://github.com/InsertKoinIO/koin) is our [dependency injection](https://developer.android.com/training/dependency-injection) library.
+We use this library to inject our viewmodels and repositories in our composables. This way we can easily test our code.
+
+Create a new package called **com.wiselab.<<name>>.data.di**. This is where we will put all our dependency injection related classes.
+
+* Create a new file called **AppModule** with following code:
+
+```kotlin
+  val appModule = module {
+    //--- API ---
+    single {
+        Room.databaseBuilder(
+            App.instance,
+            AppDatabase::class.java,
+            AppDatabase.DATABASE_NAME
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+}
+```
+Here we create a module that will be used to inject our dependencies. We create a single instance of our database here.
+
+* In the **App** class: create a new private function called initKoin to set up Koin. This function will be called in the **onCreate** function.
 * Add the following code to the **initKoin** function:
 
 ```kotlin
@@ -288,10 +330,11 @@ startKoin {
   modules(appModule)
 }
 ```
+Here we initialize Koin and add the appModule we created earlier.
 
 ### 5.1 Theme
 
-* Go to the figma file under the colors tab and place the colors in the **Color.kt** file under the theme package.
+* Go to the figma file under the colors tab and place the colors in the **Color.kt** file in the theme package. Place these colors in an **Object**.
 * Change the colors of the **LightColorScheme** in the theme.kt file, delete the **DarkColorScheme** because we are
   not going to implement a dark theme.
 * Check the [Material3](https://m3.material.io/styles/color/the-color-system/key-colors-tones) guidelines for the

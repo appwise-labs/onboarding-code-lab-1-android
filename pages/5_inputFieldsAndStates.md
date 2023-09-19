@@ -247,7 +247,7 @@ The `ViewModel` class is a critical component in managing the state and behavior
 ```kotlin
 class ViewModel(
     private val repository: Repository,
-    saveStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     // Extracts navigation arguments from the SavedStateHandle to receive data from the previous screen

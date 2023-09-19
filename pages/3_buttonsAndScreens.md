@@ -92,6 +92,7 @@ of the app. The `padding` modifier makes sure there is some space between the bu
 makes sure the buttons are spaced out vertically.
 
 * Now create the other buttons and show them in the preview.
+* Hint for the disabled state: Check the opacity/alpha value in Figma and use ``Color.SanJuan.copy(alpha = ...)``.
 * Commits linked to Jira tickets should always contain the ticket number. In this case **OB-1**. The commit message
   should look something like this: **OB-1: Create button components**.
 
