@@ -1430,6 +1430,20 @@ fun register(
 <li>Don&#39;t forget to update the appModule with the new repo.</li>
 <li>Make sure to commit and push your code. You may want to create a pull request for this.</li>
 </ul>
+<h3 is-upgraded>11.8.3 Hint</h3>
+<ul>
+<li>The cleanest way to create this userRequest is to get it in the state. Use this as an example:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">data class RegisterUiState(
+    val email: String = &#34;&#34;,
+    val password: String = &#34;&#34;,
+    val firstName: String = &#34;&#34;,
+    val lastName: String = &#34;&#34;,
+) {
+    val userRequest: UserRequest
+        get() = UserRequest(email, password, firstName, lastName)
+}
+</code></pre>
 <p>Now you are fully set up to create the rest of the application yourself. Use this codelab as a reference if you need help. Don&#39;t be afraid to ask for help if you need it. Good luck! 🚀</p>
 
 
