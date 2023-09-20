@@ -326,18 +326,8 @@ fun AppTheme(
 ### 5.3 TextStyles
 
 * Add an **object**-file named **TextStyles** to preset our different text styles. 🔤
-* Use the [Material3](https://m3.material.io/styles/typography/applying-type) guidelines for the different text
+* Use the [Design](https://www.figma.com/file/zTqTMDTcAQksdHoGxZwPRG/Project-Template?type=design&node-id=747%3A5124&mode=design&t=pYCysiA5rLg22jDL-1) guidelines for the different text
   styles.
-* Create the following styles in this file:
-    * HeadlineLarge
-    * HeadlineMedium
-    * HeadlineSmall
-    * Subtitle
-    * LabelLarge
-    * LabelSmall
-    * BodyLarge
-    * BodySmall
-    * Button
 
 * Let's create the first style together: Look at the figma design for the largest headline: "Mijn to do's". Click
   on it until it is the only component selected. You can see the text style in the right panel. Use these values to
