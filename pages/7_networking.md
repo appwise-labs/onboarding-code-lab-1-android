@@ -429,5 +429,5 @@ data class RegisterUiState(
 }
 ```
 
-Now you are fully set up to create the rest of the application yourself. Use this codelab as a reference if you need help.
+Now you are fully set up to create the rest of the application yourself. Use this CodeLab as a reference if you need help.
 Don't be afraid to ask for help if you need it. Good luck! 🚀
