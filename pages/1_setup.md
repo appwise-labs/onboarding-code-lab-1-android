@@ -273,7 +273,7 @@ debug mode.
 
 * Don't forget to add the **initCore** function to the **onCreate** function.
 
-#### 11.1.2 Init Koin
+#### 5.1.2 Init Koin
 [Koin](https://github.com/InsertKoinIO/koin) is our [dependency injection](https://developer.android.com/training/dependency-injection) library.
 We use this library to inject our viewmodels and repositories in our composables. This way we can easily test our code.
 
@@ -387,6 +387,10 @@ object Spacing {
     val huge: Dp = 64.dp
 }
 ```
+
+### 5.5 add your application name to the manifest
+In the **AndroidManifest** file add a new line in the **application** tag:
+`android:name=".App"`
 
 ### 5.5 Check your first preview
 
