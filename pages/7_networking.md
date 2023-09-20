@@ -414,5 +414,20 @@ To solve this we create a package called **response** in the **model** package. 
 * Don't forget to update the appModule with the new repo.
 * Make sure to commit and push your code. You may want to create a pull request for this.
 
+#### 11.8.3 Hint
+* The cleanest way to create this userRequest is to get it in the state. Use this as an example:
+    
+```kotlin
+data class RegisterUiState(
+    val email: String = "",
+    val password: String = "",
+    val firstName: String = "",
+    val lastName: String = "",
+) {
+    val userRequest: UserRequest
+        get() = UserRequest(email, password, firstName, lastName)
+}
+```
+
 Now you are fully set up to create the rest of the application yourself. Use this codelab as a reference if you need help.
 Don't be afraid to ask for help if you need it. Good luck! 🚀
