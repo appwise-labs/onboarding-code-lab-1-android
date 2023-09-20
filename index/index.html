@@ -223,41 +223,14 @@ git remote add origin &lt;your repo url&gt;
 <ul>
 <li>Don&#39;t forget to add the <strong>initCore</strong> function to the <strong>onCreate</strong> function.</li>
 </ul>
-<h3 is-upgraded>5.1.2 Init Database</h3>
-<p>Create a new package called <strong>com.wiselab.«name».data</strong>. This is where we will put all our data related classes. In this package create a new package called <strong>com.wiselab.«name».data.database</strong>.</p>
-<ul>
-<li>Create a new class called <strong>AppDatabase</strong> in the <strong>database</strong> package. This class will be used to create our local database. Add the following code to the <strong>Database</strong> class:</li>
-</ul>
-<pre><code language="language-kotlin" class="language-kotlin">@Database(
-    entities = [],
-    version = 1,
-    exportSchema = false
-)
-abstract class AppDatabase : RoomDatabase() {
-
-    companion object {
-        const val DATABASE_NAME = &#34;todoApp.db&#34;
-    }
-}
-</code></pre>
-<h3 is-upgraded>5.1.3 Init Koin</h3>
+<h3 is-upgraded>11.1.2 Init Koin</h3>
 <p><a href="https://github.com/InsertKoinIO/koin" target="_blank">Koin</a> is our <a href="https://developer.android.com/training/dependency-injection" target="_blank">dependency injection</a> library. We use this library to inject our viewmodels and repositories in our composables. This way we can easily test our code.</p>
 <p>Create a new package called <strong>com.wiselab.«name».data.di</strong>. This is where we will put all our dependency injection related classes.</p>
 <ul>
 <li>Create a new file called <strong>AppModule</strong> with following code:</li>
+<li>We will add to this in the future when we need to inject more dependencies.</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">  val appModule = module {
-    //--- API ---
-    single {
-        Room.databaseBuilder(
-            App.instance,
-            AppDatabase::class.java,
-            AppDatabase.DATABASE_NAME
-        )
-            .fallbackToDestructiveMigration()
-            .build()
-    }
-}
+<pre><code language="language-kotlin" class="language-kotlin">val appModule = module { }
 </code></pre>
 <p>Here we create a module that will be used to inject our dependencies. We create a single instance of our database here.</p>
 <ul>
@@ -272,7 +245,7 @@ abstract class AppDatabase : RoomDatabase() {
 }
 </code></pre>
 <p>Here we initialize Koin and add the appModule we created earlier.</p>
-<h2 is-upgraded>5.1 Theme</h2>
+<h2 is-upgraded>5.2 Theme</h2>
 <ul>
 <li>Go to the figma file under the colors tab and place the colors in the <strong>Color.kt</strong> file in the theme package. Place these colors in an <strong>Object</strong>.</li>
 <li>Change the colors of the <strong>LightColorScheme</strong> in the theme.kt file, delete the <strong>DarkColorScheme</strong> because we are not going to implement a dark theme.</li>
@@ -291,7 +264,7 @@ fun AppTheme(
    )
 }
 </code></pre>
-<h2 is-upgraded>5.2 TextStyles</h2>
+<h2 is-upgraded>5.3 TextStyles</h2>
 <ul>
 <li>Add an <strong>object</strong>-file named <strong>TextStyles</strong> to preset our different text styles. 🔤</li>
 <li>Use the <a href="https://m3.material.io/styles/typography/applying-type" target="_blank">Material3</a> guidelines for the different text styles.</li>
@@ -322,7 +295,7 @@ fun AppTheme(
 <ul>
 <li>Note that we use the <strong>Sp</strong> unit for the font size, line height and letter spacing. This is because we want to use the <strong>Sp</strong> unit for all our text styles. This way the text will scale with the system font size. Don&#39;t mind the fontFamily, SF Pro Display is the default font on iOS. The color is not needed because we will set the color in the theme.</li>
 </ul>
-<h2 is-upgraded>5.3 Spacing</h2>
+<h2 is-upgraded>5.4 Spacing</h2>
 <ul>
 <li>Add an <strong>object</strong>-file named <strong>Spacing</strong> to preset our different spacing values. 📏</li>
 <li>Use the <a href="https://m3.material.io/layout/spacing" target="_blank">Material3</a> guidelines for the different spacing values.</li>
@@ -347,12 +320,12 @@ object Spacing {
     val huge: Dp = 64.dp
 }
 </code></pre>
-<h2 is-upgraded>5.3 Check your first preview</h2>
+<h2 is-upgraded>5.5 Check your first preview</h2>
 <ul>
 <li>Go to the <strong>MainActivity.kt</strong> file and check for errors.</li>
 <li>Change the previous theme name to the new <strong>AppTheme</strong> name and clear the imports</li>
 </ul>
-<h2 is-upgraded>5.3.1 Add a virtual or physical device</h2>
+<h2 is-upgraded>5.5.1 Add a virtual or physical device</h2>
 <p>If you don&#39;t have a virtual or physical device, you can create one by following these steps: 📱</p>
 <p><strong>Physical device</strong></p>
 <ul>
@@ -470,7 +443,7 @@ object Buttons {
 <li>Commits linked to Jira tickets should always contain the ticket number. In this case <strong>OB-1</strong>. The commit message should look something like this: <strong>OB-1: Create button components</strong>.</li>
 </ul>
 <h2 is-upgraded>7.2 Create a screen</h2>
-<p>The task manager is seen as 2 Epics, onboarding and todo&#39;s. create a new package <strong>com.wiselab.«name».onboarding</strong>. In this package create a new package called <strong>landing</strong> for the landing screen. The full path should be <strong>com.wiselab.«name».onboarding.landing</strong>.</p>
+<p>The task manager is seen as 2 Epics, onboarding and todo&#39;s. create a new package <strong>com.wiselab.«name».feature</strong>. Also create a new package called <strong>onboarding</strong> in the <strong>feature</strong> package. The full path should be <strong>com.wiselab.«name».feature.onboarding</strong>. In this package create a new package called <strong>landing</strong> for the landing screen. The full path should be <strong>com.wiselab.«name».feature.onboarding.landing</strong>.</p>
 <ul>
 <li>Create a new Kotlin file called <strong>LandingScreen</strong> in the <strong>landing</strong> package.</li>
 <li>We like to split up our screens in minimal 3 parts, we go in more detail about this in a future section. For now<ul>
@@ -479,7 +452,7 @@ object Buttons {
 <li><strong>Preview</strong>: this is where we show the layout in a preview</li>
 </ul>
 </li>
-<li>This is also the order we create them in. Note that this is not the order in the file. We always place the preview above the screen and the screen above the layout.</li>
+<li>This is also the order we create them in. Note that this is <strong>not</strong> the order in the file. We <strong>always place the preview above the screen and the screen above the layout</strong>.</li>
 <li>This is the preview we are working towards:</li>
 </ul>
 <p class="image-container"><img style="width: 400.00px" src="img/dc4b0772e8520b03.png"></p>
@@ -940,6 +913,169 @@ fun Preview() {
 <li><code>NavArgs</code> is a typed class that holds data passed between screens during navigation.</li>
 <li>This data can be extracted from the <code>SavedStateHandle</code> within the ViewModel.</li>
 </ul>
+<h2 is-upgraded>10.4 Screen implementation</h2>
+<p>Time to create the login screen! 🎉</p>
+<h3 is-upgraded>10.4.1 Create the screen</h3>
+<p>You should be able to create the screen yourself now. If you need help, you can always look at the previous screens and components. Make sure you create a new package called <strong>login</strong> in the <strong>onboarding</strong> package. The full path should be <strong>com.wiselab.«name».feature.onboarding.login</strong>.</p>
+<h3 is-upgraded>10.4.2 Create the ViewModel</h3>
+<p>Create a new Kotlin file called <strong>LoginViewModel</strong> in the <strong>login</strong> package.</p>
+<pre><code language="language-kotlin" class="language-kotlin">class LoginViewModel : BaseViewModel()
+</code></pre>
+<ul>
+<li>We extend the <strong>BaseViewModel</strong>. This is a class that we created to make it easier to create ViewModels. It contains some boilerplate code that we don&#39;t want to write every time we create a new ViewModel.</li>
+</ul>
+<h3 is-upgraded>10.4.3 Create the UiState</h3>
+<p>Create a new Kotlin file called <strong>LoginUiState</strong> in the <strong>login</strong> package. Here you place the data that is needed to draw the screen. This is the data that is passed from the ViewModel to the View.</p>
+<pre><code language="language-kotlin" class="language-kotlin">data class LoginUiState (
+    val email: String = &#34;&#34;,
+    val password: String = &#34;&#34;,
+    val isPasswordVisible:Boolean = false
+)
+</code></pre>
+<ul>
+<li>Add this state to the <strong>LoginViewModel</strong>:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">class LoginViewModel : BaseViewModel() {
+
+    var state by mutableStateOf(LoginUiState())
+        private set
+}
+</code></pre>
+<h3 is-upgraded>10.4.4 Create the UiAction</h3>
+<p>Create a new Kotlin file called <strong>LoginUiAction</strong> in the <strong>login</strong> package. Here you place the actions that can be triggered from the View. This is the data that is passed from the View to the ViewModel.</p>
+<pre><code language="language-kotlin" class="language-kotlin">sealed class LoginUiAction {
+    data object OnLoginClicked : LoginUiAction()
+    data object OnRegisterClicked : LoginUiAction()
+    data object OnForgotPasswordClicked : LoginUiAction()
+    data object OnPasswordVisibilityClicked : LoginUiAction()
+    data class OnEmailChanged(val email: String) : LoginUiAction()
+    data class OnPasswordChanged(val password: String) : LoginUiAction()
+}
+</code></pre>
+<p>A <strong>sealed class</strong> is a class that can only be <strong>extended in the same file</strong>. This means that we can only use these actions in the Login screen.</p>
+<ul>
+<li>Add this action to the <strong>LoginViewModel</strong>:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">class LoginViewModel : BaseViewModel() {
+
+    var state by mutableStateOf(LoginUiState())
+        private set
+
+    fun onAction(action: LoginUiAction) {
+        when (action) {
+            is LoginUiAction.OnLoginClicked -&gt; {}
+            is LoginUiAction.OnRegisterClicked -&gt; {}
+            is LoginUiAction.OnForgotPasswordClicked -&gt; {}  
+            is LoginUiAction.OnPasswordVisibilityClicked -&gt; {}
+            is LoginUiAction.OnEmailChanged -&gt; state = state.copy(email = action.value)
+            is LoginUiAction.OnPasswordChanged -&gt; {}
+        }
+    }
+}
+</code></pre>
+<p>The <code>onEmailChanged</code> action is given as an example. The other actions you have to fill in yourself in a couple of moments.</p>
+<h3 is-upgraded>10.4.5 Implement in the Layout</h3>
+<p>Before we can use the viewModel in the Layout, we need to add it to the app module. Open the <strong>appModule.kt</strong> file in the <strong>di</strong> package. Add the following code to the file:</p>
+<pre><code language="language-kotlin" class="language-kotlin">val loginModule = module {
+    viewModel { LoginViewModel() }
+}
+</code></pre>
+<ul>
+<li>This way we can inject the viewModel in the Layout. Open the <strong>LoginScreen</strong> file and add the <code>viewModel: LoginViewModel = koinViewModel()</code> parameter to the <strong>Screen</strong> composable function.</li>
+<li>In the layout composable add 2 parameters:<ul>
+<li><code>state: LoginUiState</code></li>
+<li><code>onAction: (LoginUiAction) -> Unit = {}</code></li>
+</ul>
+</li>
+<li>In the screen composable add the following code:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">@Composable
+@Destination
+@OnboardingNavGraph
+fun LoginScreen(
+    viewModel: LoginViewModel = koinViewModel()
+) {
+    LoginLayout(
+      state = viewModel.state,
+      onAction = viewModel::onAction
+  )
+}
+</code></pre>
+<ul>
+<li>Now you can trigger the onEmailChanged action in the <strong>LoginLayout</strong> composable. Add this to your <code>EditText</code> composable: <code>onInputChange = { onAction(LoginUiAction.EmailChanged(it)) }</code></li>
+<li>Do the same for the other password and passwordVisibility action. You can use the <code>onAction</code> function to trigger the actions in the ViewModel.</li>
+<li>Hint: For the <strong>passwordVisibility</strong> you can check the <code>onClickIcon</code> parameter of the <code>EditText</code> composable.</li>
+</ul>
+<h3 is-upgraded>10.4.6 Events</h3>
+<p>Now we need to add the events to the ViewModel.</p>
+<ul>
+<li>First create a new Kotlin file called <strong>LoginUiEvent</strong> in the <strong>login</strong> package.</li>
+<li>Add the following code to the file:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">sealed class LoginUiEvent {
+    data object Back : LoginUiEvent()
+    data object NavigateToRegister : LoginUiEvent()
+    data object NavigateToForgotPassword : LoginUiEvent()
+}
+</code></pre>
+<ul>
+<li>We will use the <code>eventChannel</code> for this. Add the following code to the <strong>LoginViewModel</strong>:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">class LoginViewModel : BaseViewModel() {
+
+    var state by mutableStateOf(LoginUiState())
+        private set
+
+    private val eventChannel = Channel&lt;LoginUiEvent&gt;()
+    val eventFlow = eventChannel.receiveAsFlow()
+  
+    fun onEvent(event: LoginUiEvent) {
+        when (event) {
+            is LoginUiEvent.Back -&gt; eventChannel.send(LoginUiEvent.Back)
+            is LoginUiEvent.NavigateToRegister -&gt; eventChannel.send(LoginUiEvent.NavigateToRegister)
+            is LoginUiEvent.NavigateToForgotPassword -&gt; eventChannel.send(LoginUiEvent.NavigateToForgotPassword)
+        }
+    }
+
+    fun onAction(action: LoginUiAction) {
+        when (action) {
+            is LoginUiAction.OnLoginClicked -&gt; {}
+            is LoginUiAction.OnRegisterClicked -&gt; {}
+            is LoginUiAction.OnForgotPasswordClicked -&gt; {}  
+            is LoginUiAction.OnPasswordVisibilityClicked -&gt; {}
+            is LoginUiAction.OnEmailChanged -&gt; state = state.copy(email = action.value)
+            is LoginUiAction.OnPasswordChanged -&gt; {}
+        }
+    }
+}
+</code></pre>
+<ul>
+<li>Now we can use the <code>eventFlow</code> in the <strong>LoginScreen</strong> composable. Add the following code to the <strong>LoginScreen</strong> composable:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">@Composable
+@Destination
+@OnboardingNavGraph
+fun LoginScreen(
+    navController: NavController,
+    viewModel: LoginViewModel = koinViewModel()
+) {
+    LoginLayout(
+        state = viewModel.state,
+        onAction = viewModel::onAction
+    )
+
+    LaunchedEffect(viewModel) {
+        viewModel.eventFlow.collect { event: LoginUiEvent -&gt;
+            when (event) {
+                is LoginUiEvent.Back -&gt; navController.popBackStack()
+                is LoginUiEvent.NavigateToRegister -&gt; {}    //navController.navigate(RegisterScreenDestination) as example when the RegisterScreen is created
+                is LoginUiEvent.NavigateToForgotPassword -&gt; {}
+            }
+        }
+    }
+}
+</code></pre>
+<p>Now you&#39;re set to add <strong>actions</strong> and <strong>events</strong> to your <code>LandingScreen</code> composable to fix the navigation. Don&#39;t forget to commit and push your changes. Create a pull request so your code can be reviewed! 🙌🏻</p>
 
 
       </google-codelab-step>
@@ -948,7 +1084,25 @@ fun Preview() {
         <p>Let&#39;s start adding some data. The Api Documentation can be found <a href="https://onboarding-todo-api.development.appwi.se/api/v1/docs/" target="_blank">here</a>. username: <code>appwise</code> password: <code>password</code></p>
 <p>This is the endpoint that will be used: <code>https://onboarding-todo-api.development.appwi.se</code></p>
 <p>We use <a href="https://developer.android.com/jetpack/androidx/releases/room" target="_blank">Room</a> for our local database. Room is an abstraction layer over SQLite. It makes it easier to work with SQLite. We use <a href="https://square.github.io/retrofit/" target="_blank">Retrofit</a> for our network calls. Retrofit is a type-safe HTTP client for Android and Java.</p>
-<h2 is-upgraded>11.1 Add product flavours</h2>
+<h2 is-upgraded>11.1 Setup Networking</h2>
+<h3 is-upgraded>11.1.1 Init Database</h3>
+<p>Create a new package called <strong>com.wiselab.«name».data</strong>. This is where we will put all our data related classes. In this package create a new package called <strong>com.wiselab.«name».data.database</strong>.</p>
+<ul>
+<li>Create a new class called <strong>AppDatabase</strong> in the <strong>database</strong> package. This class will be used to create our local database. Add the following code to the <strong>Database</strong> class:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">@Database(
+    entities = [],
+    version = 1,
+    exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
+
+    companion object {
+        const val DATABASE_NAME = &#34;todoApp.db&#34;
+    }
+}
+</code></pre>
+<h3 is-upgraded>11.1.3 Add product flavours</h3>
 <ul>
 <li>Open the <strong>build.gradle</strong> file of the <strong>app</strong> module.</li>
 <li>Add the following code to the <strong>android</strong> block:</li>
@@ -971,7 +1125,7 @@ productFlavors {
 <li>Client Secret: <code>55d5f96e-eb16-4e98-8822-27cba3474e01</code></li>
 </ul>
 <p>The <strong>product flavours</strong> are used to create different versions of the app. We will use this to create a development version of the app. The development version will use the development API. In production apps we also include versions for staging and production. This way we can test the app on different environments. Make sure to <strong>build</strong> the project after adding the product flavours. This way the <strong>BuildConfig</strong> will be generated.</p>
-<h2 is-upgraded>11.2 Initialise the core Networking module</h2>
+<h3 is-upgraded>11.1.4 Initialise the core Networking module</h3>
 <ul>
 <li>In the app class, add a new function called <code>initNetworking()</code>:</li>
 </ul>
@@ -989,13 +1143,13 @@ productFlavors {
 }
 </code></pre>
 <p>This is where we initialise the Networking module. We use the <code>Networking.Builder</code> to create a new instance of the <code>Networking</code> class. Call this function from the <code>onCreate()</code> function of the app class.</p>
-<h2 is-upgraded>11.3 Create the RestClients</h2>
+<h2 is-upgraded>11.2 Create the RestClients</h2>
 <ul>
 <li>Create a new package called <strong>networking</strong> like this: <strong>com.wiselab.«name».networking</strong></li>
-<li>In this package create 2 new objects called <strong>ProtectedClient</strong> and <strong>UnProtectedClient</strong>.</li>
+<li>In this package create 2 new classes called <strong>ProtectedClient</strong> and <strong>UnProtectedClient</strong>.</li>
 <li>For now create them like this:</li>
 </ul>
-<pre><code language="language-kotlin" class="language-kotlin">class ProtectedClient(private val unprotectedRestClient: UnprotectedRestClient) : BaseRestClient() { 
+<pre><code language="language-kotlin" class="language-kotlin">class ProtectedClient(private val unprotectedClient: UnprotectedClient) : BaseRestClient() { 
     override val protectedClient = true
     override fun getBaseUrl() = BuildConfig.API_HOST
     override fun enableProxyManInterceptor() = true
@@ -1007,7 +1161,7 @@ productFlavors {
     override fun enableProxyManInterceptor() = true
 }
 </code></pre>
-<h2 is-upgraded>11.4 ApiManagerService</h2>
+<h2 is-upgraded>11.3 ApiManagerService</h2>
 <p>We are going to create the <strong>service</strong> that will be used for api token management. This service will be used to get the api token and refresh it when it&#39;s expired.</p>
 <ul>
 <li>Create a new package called <strong>service</strong> in the <strong>networking</strong> package like this: <strong>com.wiselab.«name».networking.services</strong></li>
@@ -1039,7 +1193,7 @@ productFlavors {
 }
 </code></pre>
 <p>Here we define the endpoints that we will use to get the api token and refresh it when it&#39;s expired. The fields that are used in the endpoints are defined in the <strong>NetworkConstants</strong> class.</p>
-<h2 is-upgraded>11.5 Repository</h2>
+<h2 is-upgraded>11.4 Repository</h2>
 <p>We are going to create the <strong>repository</strong> that will be used to get the api token and refresh it when it&#39;s expired.</p>
 <ul>
 <li>Create a new package called <strong>repository</strong> in the <strong>data</strong> package like this: <strong>com.wiselab.«name».data.repository</strong></li>
@@ -1077,7 +1231,7 @@ productFlavors {
 }
 </code></pre>
 <p>As parameters we pass the <strong>AppDatabase</strong>, <strong>ProtectedClient</strong> and <strong>UnprotectedClient</strong>. We use the <strong>UnprotectedClient</strong> to get the <strong>AuthService</strong> service. We use this service to get the api token. We use the <strong>ProtectedClient</strong> to save the api token in the <strong>Networking</strong> class. Make sure to take a look at the <code>doCall()</code> function that is used to make the api call. This function is defined in the <strong>BaseRepository</strong> class.</p>
-<h2 is-upgraded>11.6 Hawk</h2>
+<h2 is-upgraded>11.5 Hawk</h2>
 <p>Hawk is secure, simple key-value storage for Android. It&#39;s encrypted and it&#39;s easy to use. We will use it to store some values.</p>
 <ul>
 <li>Create a package <strong>Util</strong> like this: <strong>com.wiselab.«name».util</strong></li>
@@ -1152,7 +1306,7 @@ data class User(
         }
     }
 </code></pre>
-<h2 is-upgraded>DAO</h2>
+<h2 is-upgraded>11.7 DAO</h2>
 <p>A dao is used to access the database. We will create a dao for the <code>User</code> entity.</p>
 <ul>
 <li>Create a new package called <strong>dao</strong> in the <strong>data</strong> package like this: <strong>com.wiselab.«name».data.dao</strong></li>

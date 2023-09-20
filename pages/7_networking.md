@@ -265,7 +265,7 @@ override suspend fun userInfo() {
     }
 ```
 
-### DAO
+### 11.7 DAO
 A dao is used to access the database. We will create a dao for the `User` entity.
 
 * Create a new package called **dao** in the **data** package like this: **com.wiselab.<<name>>.data.dao**
@@ -299,3 +299,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 }
 ```
+

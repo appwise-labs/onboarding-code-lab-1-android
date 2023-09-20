@@ -364,20 +364,12 @@ class LoginViewModel : BaseViewModel() {
 
     private val eventChannel = Channel<LoginUiEvent>()
     val eventFlow = eventChannel.receiveAsFlow()
-  
-    fun onEvent(event: LoginUiEvent) {
-        when (event) {
-            is LoginUiEvent.Back -> eventChannel.send(LoginUiEvent.Back)
-            is LoginUiEvent.NavigateToRegister -> eventChannel.send(LoginUiEvent.NavigateToRegister)
-            is LoginUiEvent.NavigateToForgotPassword -> eventChannel.send(LoginUiEvent.NavigateToForgotPassword)
-        }
-    }
 
     fun onAction(action: LoginUiAction) {
         when (action) {
             is LoginUiAction.OnLoginClicked -> {}
-            is LoginUiAction.OnRegisterClicked -> {}
-            is LoginUiAction.OnForgotPasswordClicked -> {}  
+            is LoginUiAction.OnRegisterClicked -> eventChannel.trySend(LoginUiEvent.NavigateToRegister)
+            is LoginUiAction.OnForgotPasswordClicked -> eventChannel.trySend(LoginUiEvent.NavigateToForgotPassword)
             is LoginUiAction.OnPasswordVisibilityClicked -> {}
             is LoginUiAction.OnEmailChanged -> state = state.copy(email = action.value)
             is LoginUiAction.OnPasswordChanged -> {}
