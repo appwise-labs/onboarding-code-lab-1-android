@@ -273,49 +273,17 @@ debug mode.
 
 * Don't forget to add the **initCore** function to the **onCreate** function.
 
-#### 5.1.2 Init Database
-Create a new package called **com.wiselab.<<name>>.data**. This is where we will put all our data related classes.
-In this package create a new package called **com.wiselab.<<name>>.data.database**.
-
-* Create a new class called **AppDatabase** in the **database** package. This class will be used to create our local
-  database. Add the following code to the **Database** class:
-
-```kotlin
-@Database(
-    entities = [],
-    version = 1,
-    exportSchema = false
-)
-abstract class AppDatabase : RoomDatabase() {
-
-    companion object {
-        const val DATABASE_NAME = "todoApp.db"
-    }
-}
-```
-
-
-#### 5.1.3 Init Koin
+#### 11.1.2 Init Koin
 [Koin](https://github.com/InsertKoinIO/koin) is our [dependency injection](https://developer.android.com/training/dependency-injection) library.
 We use this library to inject our viewmodels and repositories in our composables. This way we can easily test our code.
 
 Create a new package called **com.wiselab.<<name>>.data.di**. This is where we will put all our dependency injection related classes.
 
 * Create a new file called **AppModule** with following code:
+* We will add to this in the future when we need to inject more dependencies.
 
 ```kotlin
-  val appModule = module {
-    //--- API ---
-    single {
-        Room.databaseBuilder(
-            App.instance,
-            AppDatabase::class.java,
-            AppDatabase.DATABASE_NAME
-        )
-            .fallbackToDestructiveMigration()
-            .build()
-    }
-}
+val appModule = module { }
 ```
 Here we create a module that will be used to inject our dependencies. We create a single instance of our database here.
 
@@ -332,7 +300,7 @@ startKoin {
 ```
 Here we initialize Koin and add the appModule we created earlier.
 
-### 5.1 Theme
+### 5.2 Theme
 
 * Go to the figma file under the colors tab and place the colors in the **Color.kt** file in the theme package. Place these colors in an **Object**.
 * Change the colors of the **LightColorScheme** in the theme.kt file, delete the **DarkColorScheme** because we are
@@ -355,7 +323,7 @@ fun AppTheme(
 }
 ```
 
-### 5.2 TextStyles
+### 5.3 TextStyles
 
 * Add an **object**-file named **TextStyles** to preset our different text styles. 🔤
 * Use the [Material3](https://m3.material.io/styles/typography/applying-type) guidelines for the different text
@@ -393,7 +361,7 @@ object TextStyles {
   the fontFamily, SF Pro Display is the default font on iOS. The color is not needed because we will set the color
   in the theme.
 
-### 5.3 Spacing
+### 5.4 Spacing
 
 * Add an **object**-file named **Spacing** to preset our different spacing values. 📏
 * Use the [Material3](https://m3.material.io/layout/spacing) guidelines for the different spacing values.
@@ -420,12 +388,12 @@ object Spacing {
 }
 ```
 
-### 5.3 Check your first preview
+### 5.5 Check your first preview
 
 * Go to the **MainActivity.kt** file and check for errors.
 * Change the previous theme name to the new **AppTheme** name and clear the imports
 
-### 5.3.1 Add a virtual or physical device
+### 5.5.1 Add a virtual or physical device
 
 If you don't have a virtual or physical device, you can create one by following these steps: 📱
 

@@ -9,8 +9,32 @@ We use [Room](https://developer.android.com/jetpack/androidx/releases/room) for 
 It makes it easier to work with SQLite. We use [Retrofit](https://square.github.io/retrofit/) for our network calls.
 Retrofit is a type-safe HTTP client for Android and Java.
 
-### 11.1 Add product flavours
+### 11.1 Setup Networking
+
+#### 11.1.1 Init Database
+Create a new package called **com.wiselab.<<name>>.data**. This is where we will put all our data related classes.
+In this package create a new package called **com.wiselab.<<name>>.data.database**.
+
+* Create a new class called **AppDatabase** in the **database** package. This class will be used to create our local
+  database. Add the following code to the **Database** class:
+
+```kotlin
+@Database(
+    entities = [],
+    version = 1,
+    exportSchema = false
+)
+abstract class AppDatabase : RoomDatabase() {
+
+    companion object {
+        const val DATABASE_NAME = "todoApp.db"
+    }
+}
+```
+
+#### 11.1.3 Add product flavours
 * Open the **build.gradle** file of the **app** module.
+* 
 * Add the following code to the **android** block:
 
 ```kotlin
@@ -35,7 +59,7 @@ The **product flavours** are used to create different versions of the app. We wi
 The development version will use the development API. In production apps we also include versions for staging and production. This way we can test the app on different environments.
 Make sure to **build** the project after adding the product flavours. This way the **BuildConfig** will be generated.
 
-### 11.2 Initialise the core Networking module
+#### 11.1.4 Initialise the core Networking module
 * In the app class, add a new function called `initNetworking()`:
 
 ```kotlin
@@ -55,13 +79,13 @@ private fun initNetworking() {
 This is where we initialise the Networking module. We use the `Networking.Builder` to create a new instance of the `Networking` class.
 Call this function from the `onCreate()` function of the app class.
 
-### 11.3 Create the RestClients
+### 11.2 Create the RestClients
 * Create a new package called **networking** like this: **com.wiselab.<<name>>.networking**
-* In this package create 2 new objects called **ProtectedClient** and **UnProtectedClient**.
+* In this package create 2 new classes called **ProtectedClient** and **UnProtectedClient**.
 * For now create them like this:
     
 ```kotlin
-class ProtectedClient(private val unprotectedRestClient: UnprotectedRestClient) : BaseRestClient() { 
+class ProtectedClient(private val unprotectedClient: UnprotectedClient) : BaseRestClient() { 
     override val protectedClient = true
     override fun getBaseUrl() = BuildConfig.API_HOST
     override fun enableProxyManInterceptor() = true
@@ -76,7 +100,7 @@ class UnProtectedClient : BaseRestClient() {
 }
 ```
 
-### 11.4 ApiManagerService
+### 11.3 ApiManagerService
 We are going to create the **service** that will be used for api token management. This service will be used to get the api token and refresh it when it's expired.
 
 * Create a new package called **service** in the **networking** package like this: **com.wiselab.<<name>>.networking.services**
@@ -110,7 +134,7 @@ interface AuthService : BaseService {
 ```
 Here we define the endpoints that we will use to get the api token and refresh it when it's expired. The fields that are used in the endpoints are defined in the **NetworkConstants** class.
 
-### 11.5 Repository
+### 11.4 Repository
 We are going to create the **repository** that will be used to get the api token and refresh it when it's expired.
 
 * Create a new package called **repository** in the **data** package like this: **com.wiselab.<<name>>.data.repository**
@@ -156,7 +180,7 @@ class AuthRepoImpl(
 As parameters we pass the **AppDatabase**, **ProtectedClient** and **UnprotectedClient**. We use the **UnprotectedClient** to get the **AuthService** service. We use this service to get the api token. We use the **ProtectedClient** to save the api token in the **Networking** class.
 Make sure to take a look at the `doCall()` function that is used to make the api call. This function is defined in the **BaseRepository** class.
 
-### 11.6 Hawk
+### 11.5 Hawk
 Hawk is secure, simple key-value storage for Android. It's encrypted and it's easy to use. We will use it to store some values.
 
 * Create a package **Util** like this: **com.wiselab.<<name>>.util**
@@ -275,7 +299,3 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 }
 ```
-
-
-
-

@@ -98,16 +98,17 @@ makes sure the buttons are spaced out vertically.
 
 ### 7.2 Create a screen
 
-The task manager is seen as 2 Epics, onboarding and todo's. create a new package **com.wiselab.<<name>>.onboarding**.
-In this package create a new package called **landing** for the landing screen. The full path should be **com.wiselab.<<name>>.onboarding.landing**.
+The task manager is seen as 2 Epics, onboarding and todo's. create a new package **com.wiselab.<<name>>.feature**.
+Also create a new package called **onboarding** in the **feature** package. The full path should be **com.wiselab.<<name>>.feature.onboarding**.
+In this package create a new package called **landing** for the landing screen. The full path should be **com.wiselab.<<name>>.feature.onboarding.landing**.
 
 * Create a new Kotlin file called **LandingScreen** in the **landing** package.
 * We like to split up our screens in minimal 3 parts, we go in more detail about this in a future section. For now
     * **Layout**: this is where we place all the content of the screen
     * **Screen**: this is where we link our data and state to the layout
     * **Preview**: this is where we show the layout in a preview
-* This is also the order we create them in. Note that this is not the order in the file. We always place the
-  preview above the screen and the screen above the layout.
+* This is also the order we create them in. Note that this is **not** the order in the file. We **always place the
+  preview above the screen and the screen above the layout**.
 
 * This is the preview we are working towards:
 
