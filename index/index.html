@@ -976,7 +976,7 @@ fun Preview() {
 <p>The <code>onEmailChanged</code> action is given as an example. The other actions you have to fill in yourself in a couple of moments.</p>
 <h3 is-upgraded>10.4.5 Implement in the Layout</h3>
 <p>Before we can use the viewModel in the Layout, we need to add it to the app module. Open the <strong>appModule.kt</strong> file in the <strong>di</strong> package. Add the following code to the file:</p>
-<pre><code language="language-kotlin" class="language-kotlin">val loginModule = module {
+<pre><code language="language-kotlin" class="language-kotlin">val appModule = module {
     viewModel { LoginViewModel() }
 }
 </code></pre>
@@ -1028,20 +1028,12 @@ fun LoginScreen(
 
     private val eventChannel = Channel&lt;LoginUiEvent&gt;()
     val eventFlow = eventChannel.receiveAsFlow()
-  
-    fun onEvent(event: LoginUiEvent) {
-        when (event) {
-            is LoginUiEvent.Back -&gt; eventChannel.send(LoginUiEvent.Back)
-            is LoginUiEvent.NavigateToRegister -&gt; eventChannel.send(LoginUiEvent.NavigateToRegister)
-            is LoginUiEvent.NavigateToForgotPassword -&gt; eventChannel.send(LoginUiEvent.NavigateToForgotPassword)
-        }
-    }
 
     fun onAction(action: LoginUiAction) {
         when (action) {
             is LoginUiAction.OnLoginClicked -&gt; {}
-            is LoginUiAction.OnRegisterClicked -&gt; {}
-            is LoginUiAction.OnForgotPasswordClicked -&gt; {}  
+            is LoginUiAction.OnRegisterClicked -&gt; eventChannel.trySend(LoginUiEvent.NavigateToRegister)
+            is LoginUiAction.OnForgotPasswordClicked -&gt; eventChannel.trySend(LoginUiEvent.NavigateToForgotPassword)
             is LoginUiAction.OnPasswordVisibilityClicked -&gt; {}
             is LoginUiAction.OnEmailChanged -&gt; state = state.copy(email = action.value)
             is LoginUiAction.OnPasswordChanged -&gt; {}
@@ -1338,6 +1330,107 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 }
 </code></pre>
+<ul>
+<li>Now we want to save our User data we get from the <code>userInfo()</code> call into our database. This is done by adding the <strong>insert</strong> line to the <code>userInfo()</code> call:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">override suspend fun userInfo() {
+        doCall(protectedClient.getService&lt;AuthService&gt;().userInfo()).also {
+            HawkManager.currentUserId = it.id
+            db.userDao().insert(it)
+        }
+    }
+</code></pre>
+<h2 is-upgraded>11.8 Adding login and register</h2>
+<p>You already added the <code>login()</code> function to the <strong>AuthRepo</strong> interface. Add the <code>userInfo()</code> function to the login function like this:</p>
+<pre><code language="language-kotlin" class="language-kotlin">override suspend fun login(email: String, password: String) {
+        val accessToken = doCall(
+            unprotectedClient.getService&lt;AuthService&gt;().loginWithPassword(
+                &#34;password&#34;,
+                Networking.getClientIdValue(),
+                Networking.getClientSecretValue(),
+                email,
+                password
+            )
+        )
+
+        Networking.saveAccessToken(accessToken)
+        userInfo()
+    }
+</code></pre>
+<p>This way we will get the user info stored in the database after we logged in.</p>
+<ul>
+<li>Navigate to your <code>LoginViewModel</code> and add the <code>authRepo</code> as a parameter to the constructor.</li>
+<li>This will be injected so we need to add some code to the appModule:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">val appModule = module {
+    single {
+        Room.databaseBuilder(
+            App.instance,
+            AppDatabase::class.java,
+            AppDatabase.DATABASE_NAME
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+    
+    single { UnprotectedClient() }
+    single { ProtectedClient(get()) }
+  
+    single&lt;AuthRepo&gt; { AuthRepoImpl(get(), get(), get()) }
+  
+    viewModel { LoginViewModel() }
+}
+</code></pre>
+<p>Let&#39;s explain what we are doing. We are creating singletons of the <code>AppDatabase</code>, <code>UnprotectedClient</code>, <code>ProtectedClient</code> and <code>AuthRepoImpl</code> classes. This is needed because we want to use the same instance of these classes everywhere in the app. We also want to inject the <code>AuthRepoImpl</code> class in the <code>LoginViewModel</code>.</p>
+<ul>
+<li>The <code>AuthRepo</code> has a dependency on the <code>AppDatabase</code>, <code>UnprotectedClient</code> and <code>ProtectedClient</code> classes. We use the <code>get()</code> function to get the instance of these classes.</li>
+</ul>
+<h3 is-upgraded>11.8.1 Login</h3>
+<ul>
+<li>In the <code>LoginViewModel</code> add a new function called <code>login()</code>:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">fun login(email: String, password: String) = launchAndLoad { 
+    authRepo.login(email, password)
+}
+</code></pre>
+<p>This function can be called from the onAction of the <code>LoginViewModel</code> so we can use it in the <code>LoginScreen</code>. The launchAndLoad function is a function that is defined in the <code>BaseViewModel</code>. It&#39;s a function that is used to make asynchronous calls.</p>
+<ul>
+<li>We want to add an <strong>extra parameter</strong> to the login function for future purposes.</li>
+<li>At this moment we don&#39;t know if the login call <strong>succeeds</strong>. A handy feature of coroutines is that the <strong>coroutine is cancelled</strong> when an exception is thrown.</li>
+<li>Therefore we add the extra parameter <code>onSuccess</code> to the <code>login()</code> function. This is a function that will be called when the login call succeeds.</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">fun login(email: String, password: String, onSuccess: () -&gt; Unit) = launchAndLoad {
+    authRepo.login(email, password)
+    onSuccess()
+}
+</code></pre>
+<p>This onSuccess function will be used to <strong>navigate</strong> to the main screen when the <strong>login call</strong> succeeds.</p>
+<h3 is-upgraded>11.8.2 Register</h3>
+<p>Let&#39;s create the register functionality. Start by adding a new service called <code>UserService</code> We do this to keep the calls separated like in the <strong>api documentation</strong>.</p>
+<ul>
+<li>Add this to your service:</li>
+</ul>
+<pre><code language="language-kotlin" class="language-kotlin">@POST(&#34;api/v1/users&#34;)
+fun register(
+  @Body userRequest: UserRequest
+): Call&lt;User&gt;
+</code></pre>
+<link rel="stylesheet" href="css/style.css">
+<p>This is a <strong>@POST</strong> call with the endpoint specified in the annotation, it returns a <code>User</code> object as visible in the <strong>documentation</strong>. The call expects a <strong>body</strong>, also visible in the documentation. You can see this is not the same object as a <code>User</code> object. Therefore we create a new <strong>request</strong> object called <code>UserRequest</code>:</p>
+<ul>
+<li>Create a new package called <strong>model</strong> in the <strong>networking</strong> package like this: <strong>com.wiselab.«name».networking.model</strong></li>
+<li>In this package create a new package called <strong>request</strong></li>
+<li>In this package create a new data class called <strong>UserRequest</strong> with the data that is necessary for the register call</li>
+</ul>
+<p><strong>Side note</strong>: It&#39;s possible you get objects from the api that you <strong>don&#39;t</strong> want as an entity. Something that has to be <strong>mapped</strong> to an existing entity for example. To solve this we create a package called <strong>response</strong> in the <strong>model</strong> package. Here we create the objects that we get from the api. We use these objects to <strong>map</strong> to our entities.</p>
+<p><strong>New Repo</strong></p>
+<ul>
+<li>Create a new package called <strong>userRepo</strong> in the <strong>repository</strong> package like this: <strong>com.wiselab.«name».data.repository.userRepo</strong></li>
+<li>You have the knowledge to create this repo with the <strong>register call</strong> yourself. If you need help, you can check the <strong>authRepo</strong>.</li>
+<li>Don&#39;t forget to update the appModule with the new repo.</li>
+<li>Make sure to commit and push your code. You may want to create a pull request for this.</li>
+</ul>
+<p>Now you are fully set up to create the rest of the application yourself. Use this codelab as a reference if you need help. Don&#39;t be afraid to ask for help if you need it. Good luck! 🚀</p>
 
 
       </google-codelab-step>
