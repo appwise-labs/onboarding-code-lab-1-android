@@ -10,8 +10,6 @@ status: Draft
 
 ## What you'll learn: overview
 
-Duration: 1:00:00
-
 <img width="200" src="index/img/intro/wisemen_logo_acid.png" />
 
 Hello fellow developer! Welcome to **Wisemen**, we are happy to have you on board! We want to make sure you are
@@ -54,8 +52,6 @@ are written in Jetpack Compose, therefore we will be using that for this Wiselab
 
 ## What you need: Prerequisites
 
-Duration: 0:55:00
-
 Before we start, make sure you have everything you need to complete this **WiseLab**. You will need:
 
 ### Android Studio
@@ -82,8 +78,6 @@ To access the designs you need to log in with your Wisemen account:
 *ToDo: Add link to Jira*
 
 ## Create the project
-
-Duration: 0:50:00
 
 ### 3.1 Create a new project
 
@@ -136,8 +130,6 @@ Now checkout the **develop** branch and create a new feature branch called **fea
 
 ## Add the Android Core Library
 
-Duration: 0:40:00
-
 Now that you have created your project, it's time to add
 our [Android Core Library](https://github.com/appwise-labs/AndroidCore)! This library contains a lot of useful
 classes and functions that we use in all our projects. The latest version is also noted in the readme.
@@ -156,7 +148,7 @@ plugins {
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android
     id("org.jetbrains.kotlin.android") version "<<version>>" apply false
     
-    https://github.com/google/ksp/releases
+    //https://github.com/google/ksp/releases
     id("com.google.devtools.ksp") version "<<version>>" apply false
 }
 ```
@@ -258,6 +250,8 @@ we can access the **App** class from anywhere in the app. We also use this class
 and if we are not in release mode. This is used to enable the Proxyman interceptor for debugging purposes. The
 instance of the **App** class is set in the **onCreate** function.
 
+#### 5.1.1 Init Core
+
 * Create a new private function called initCore to set up the Android Core Library. This function will be called in
   the **onCreate** function.
 * Add the following code to the **initCore** function:
@@ -279,9 +273,36 @@ debug mode.
 
 * Don't forget to add the **initCore** function to the **onCreate** function.
 
-### 5.1 Theme
+#### 11.1.2 Init Koin
+[Koin](https://github.com/InsertKoinIO/koin) is our [dependency injection](https://developer.android.com/training/dependency-injection) library.
+We use this library to inject our viewmodels and repositories in our composables. This way we can easily test our code.
 
-* Go to the figma file under the colors tab and place the colors in the **Color.kt** file under the theme package.
+Create a new package called **com.wiselab.<<name>>.data.di**. This is where we will put all our dependency injection related classes.
+
+* Create a new file called **AppModule** with following code:
+* We will add to this in the future when we need to inject more dependencies.
+
+```kotlin
+val appModule = module { }
+```
+Here we create a module that will be used to inject our dependencies. We create a single instance of our database here.
+
+* In the **App** class: create a new private function called initKoin to set up Koin. This function will be called in the **onCreate** function.
+* Add the following code to the **initKoin** function:
+
+```kotlin
+startKoin {
+  androidLogger(Level.DEBUG)
+  //this is so when you want to inject app context this determines where to get it
+  androidContext(this@App)
+  modules(appModule)
+}
+```
+Here we initialize Koin and add the appModule we created earlier.
+
+### 5.2 Theme
+
+* Go to the figma file under the colors tab and place the colors in the **Color.kt** file in the theme package. Place these colors in an **Object**.
 * Change the colors of the **LightColorScheme** in the theme.kt file, delete the **DarkColorScheme** because we are
   not going to implement a dark theme.
 * Check the [Material3](https://m3.material.io/styles/color/the-color-system/key-colors-tones) guidelines for the
@@ -302,7 +323,7 @@ fun AppTheme(
 }
 ```
 
-### 5.2 TextStyles
+### 5.3 TextStyles
 
 * Add an **object**-file named **TextStyles** to preset our different text styles. 🔤
 * Use the [Material3](https://m3.material.io/styles/typography/applying-type) guidelines for the different text
@@ -340,7 +361,7 @@ object TextStyles {
   the fontFamily, SF Pro Display is the default font on iOS. The color is not needed because we will set the color
   in the theme.
 
-### 5.3 Spacing
+### 5.4 Spacing
 
 * Add an **object**-file named **Spacing** to preset our different spacing values. 📏
 * Use the [Material3](https://m3.material.io/layout/spacing) guidelines for the different spacing values.
@@ -367,12 +388,12 @@ object Spacing {
 }
 ```
 
-### 5.3 Check your first preview
+### 5.5 Check your first preview
 
 * Go to the **MainActivity.kt** file and check for errors.
 * Change the previous theme name to the new **AppTheme** name and clear the imports
 
-### 5.3.1 Add a virtual or physical device
+### 5.5.1 Add a virtual or physical device
 
 If you don't have a virtual or physical device, you can create one by following these steps: 📱
 
