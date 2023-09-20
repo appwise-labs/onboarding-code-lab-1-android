@@ -412,3 +412,6 @@ fun LoginScreen(
     }
 }
 ```
+
+Now you're set to add **actions** and **events** to your `LandingScreen` composable to fix the navigation.
+Don't forget to commit and push your changes. Create a pull request so your code can be reviewed! 🙌🏻
