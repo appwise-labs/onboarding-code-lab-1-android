@@ -58,6 +58,7 @@ productFlavors {
 The **product flavours** are used to create different versions of the app. We will use this to create a development version of the app.
 The development version will use the development API. In production apps we also include versions for staging and production. This way we can test the app on different environments.
 Make sure to **build** the project after adding the product flavours. This way the **BuildConfig** will be generated.
+It is possible that the **wrong Buildconfig is automatically imported**. **Remove** this import.
 
 #### 11.1.4 Initialise the core Networking module
 * In the app class, add a new function called `initNetworking()`:
