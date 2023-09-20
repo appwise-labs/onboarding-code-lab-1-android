@@ -30,15 +30,15 @@
     
       <google-codelab-step label="What you&#39;ll learn: overview" duration="0">
         <p class="image-container"><img style="width: 200.00px" src="img/d669aaa2bdd4e2f4.png"></p>
-<p>Hello fellow developer! Welcome to <strong>Wisemen</strong>, we are happy to have you on board! We want to make sure you are soon up to speed with the core of Android development and our way of working. Therefore we created this awesome series of <strong>CodeLabs</strong> for you. These are a constant work in progress, so please let us know if you have any feedback or suggestions! This is what you will learn in this CodeLab:</p>
+<p>Hello fellow developer! Welcome to <strong>Wisemen</strong>, we are happy to have you on board! We want to make sure you are soon up to speed with the core of Android development and our way of working. Therefore we created this awesome <strong>CodeLab</strong> for you. These are a constant work in progress, so please let us know if you have any feedback or suggestions! This is what you will learn in this CodeLab:</p>
 <h2 is-upgraded>1. Creating a new project with our Android Core Library</h2>
-<p>We have our own Android Core Library that we use in all our projects. This library contains a lot of useful classes and functions that we use in all our projects.</p>
+<p>We have our own <strong>Android Core Library</strong> that we use in all our projects. This library contains a lot of useful classes and functions that we use in all our projects.</p>
 <h2 is-upgraded>2. Folder structure</h2>
 <p>We have a specific folder structure that we use in all our projects. This is to make sure that we can easily find all the files we need.</p>
 <h2 is-upgraded>3. AGILE</h2>
 <ol type="1">
 <li>Work with <strong>Jira</strong></li>
-<li>Using <strong>Bitbucket</strong> for version control</li>
+<li>Using <strong>Github</strong> for version control</li>
 <li>Branching strategy</li>
 <li><strong>Pull Requests</strong></li>
 </ol>
@@ -66,7 +66,7 @@
 </ul>
 <h2 is-upgraded>GitHub Repository</h2>
 <ul>
-<li>You can find the link to your repo on your <a href="https://appwise.atlassian.net/wiki/home" target="_blank">personal Confluence</a> page.</li>
+<li>You have to create your own repository on GitHub and add your personal reviewers to your project.</li>
 </ul>
 <h2 is-upgraded>Jira access</h2>
 <p><em>ToDo: Add link to Jira</em></p>
@@ -223,7 +223,7 @@ git remote add origin &lt;your repo url&gt;
 <ul>
 <li>Don&#39;t forget to add the <strong>initCore</strong> function to the <strong>onCreate</strong> function.</li>
 </ul>
-<h3 is-upgraded>11.1.2 Init Koin</h3>
+<h3 is-upgraded>5.1.2 Init Koin</h3>
 <p><a href="https://github.com/InsertKoinIO/koin" target="_blank">Koin</a> is our <a href="https://developer.android.com/training/dependency-injection" target="_blank">dependency injection</a> library. We use this library to inject our viewmodels and repositories in our composables. This way we can easily test our code.</p>
 <p>Create a new package called <strong>com.wiselab.«name».data.di</strong>. This is where we will put all our dependency injection related classes.</p>
 <ul>
@@ -267,19 +267,7 @@ fun AppTheme(
 <h2 is-upgraded>5.3 TextStyles</h2>
 <ul>
 <li>Add an <strong>object</strong>-file named <strong>TextStyles</strong> to preset our different text styles. 🔤</li>
-<li>Use the <a href="https://m3.material.io/styles/typography/applying-type" target="_blank">Material3</a> guidelines for the different text styles.</li>
-<li>Create the following styles in this file:<ul>
-<li>HeadlineLarge</li>
-<li>HeadlineMedium</li>
-<li>HeadlineSmall</li>
-<li>Subtitle</li>
-<li>LabelLarge</li>
-<li>LabelSmall</li>
-<li>BodyLarge</li>
-<li>BodySmall</li>
-<li>Button</li>
-</ul>
-</li>
+<li>Use the <a href="https://www.figma.com/file/zTqTMDTcAQksdHoGxZwPRG/Project-Template?type=design&node-id=747%3A5124&mode=design&t=pYCysiA5rLg22jDL-1" target="_blank">Design</a> guidelines for the different text styles.</li>
 <li>Let&#39;s create the first style together: Look at the figma design for the largest headline: &#34;Mijn to do&#39;s&#34;. Click on it until it is the only component selected. You can see the text style in the right panel. Use these values to create the <strong>HeadlineLarge</strong> style:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">object TextStyles {
@@ -320,6 +308,8 @@ object Spacing {
     val huge: Dp = 64.dp
 }
 </code></pre>
+<h2 is-upgraded>5.5 add your application name to the manifest</h2>
+<p>In the <strong>AndroidManifest</strong> file add a new line in the <strong>application</strong> tag: <code>android:name=".App"</code></p>
 <h2 is-upgraded>5.5 Check your first preview</h2>
 <ul>
 <li>Go to the <strong>MainActivity.kt</strong> file and check for errors.</li>
@@ -1097,6 +1087,7 @@ abstract class AppDatabase : RoomDatabase() {
 <h3 is-upgraded>11.1.3 Add product flavours</h3>
 <ul>
 <li>Open the <strong>build.gradle</strong> file of the <strong>app</strong> module.</li>
+<li>Add <code>buildConfig = true</code> to the <strong>buildFeatures</strong> block</li>
 <li>Add the following code to the <strong>android</strong> block:</li>
 </ul>
 <pre><code language="language-kotlin" class="language-kotlin">flavorDimensions += &#34;env&#34;
@@ -1116,7 +1107,7 @@ productFlavors {
 <li>Client ID: <code>bdba526c-31b3-4740-a4e6-bfbaf96ec62e</code></li>
 <li>Client Secret: <code>55d5f96e-eb16-4e98-8822-27cba3474e01</code></li>
 </ul>
-<p>The <strong>product flavours</strong> are used to create different versions of the app. We will use this to create a development version of the app. The development version will use the development API. In production apps we also include versions for staging and production. This way we can test the app on different environments. Make sure to <strong>build</strong> the project after adding the product flavours. This way the <strong>BuildConfig</strong> will be generated.</p>
+<p>The <strong>product flavours</strong> are used to create different versions of the app. We will use this to create a development version of the app. The development version will use the development API. In production apps we also include versions for staging and production. This way we can test the app on different environments. Make sure to <strong>build</strong> the project after adding the product flavours. This way the <strong>BuildConfig</strong> will be generated. It is possible that the <strong>wrong Buildconfig is automatically imported</strong>. <strong>Remove</strong> this import.</p>
 <h3 is-upgraded>11.1.4 Initialise the core Networking module</h3>
 <ul>
 <li>In the app class, add a new function called <code>initNetworking()</code>:</li>
@@ -1444,7 +1435,7 @@ fun register(
         get() = UserRequest(email, password, firstName, lastName)
 }
 </code></pre>
-<p>Now you are fully set up to create the rest of the application yourself. Use this codelab as a reference if you need help. Don&#39;t be afraid to ask for help if you need it. Good luck! 🚀</p>
+<p>Now you are fully set up to create the rest of the application yourself. Use this CodeLab as a reference if you need help. Don&#39;t be afraid to ask for help if you need it. Good luck! 🚀</p>
 
 
       </google-codelab-step>

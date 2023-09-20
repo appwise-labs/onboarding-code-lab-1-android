@@ -14,13 +14,13 @@ status: Draft
 
 Hello fellow developer! Welcome to **Wisemen**, we are happy to have you on board! We want to make sure you are
 soon up to speed with the core of Android development and our way of working.
-Therefore we created this awesome series of **CodeLabs** for you. These are a constant work in progress, so please
+Therefore we created this awesome **CodeLab** for you. These are a constant work in progress, so please
 let us know if you have any feedback or suggestions!
 This is what you will learn in this CodeLab:
 
 ### 1. Creating a new project with our Android Core Library
 
-We have our own Android Core Library that we use in all our projects. This library contains a lot of useful classes
+We have our own **Android Core Library** that we use in all our projects. This library contains a lot of useful classes
 and functions that we use in all our projects.
 
 ### 2. Folder structure
@@ -31,7 +31,7 @@ all the files we need.
 ### 3. AGILE
 
 1. Work with **Jira**
-2. Using **Bitbucket** for version control
+2. Using **Github** for version control
 3. Branching strategy
 4. **Pull Requests**
 
@@ -71,7 +71,7 @@ To access the designs you need to log in with your Wisemen account:
 
 ### GitHub Repository
 
-* You can find the link to your repo on your [personal Confluence](https://appwise.atlassian.net/wiki/home) page.
+* You have to create your own repository on GitHub and add your personal reviewers to your project.
 
 ### Jira access
 
