@@ -300,3 +300,119 @@ abstract class AppDatabase : RoomDatabase() {
 }
 ```
 
+* Now we want to save our User data we get from the `userInfo()` call into our database. This is done by adding the **insert** line to the `userInfo()` call:
+
+```kotlin
+override suspend fun userInfo() {
+        doCall(protectedClient.getService<AuthService>().userInfo()).also {
+            HawkManager.currentUserId = it.id
+            db.userDao().insert(it)
+        }
+    }
+```
+
+### 11.8 Adding login and register
+You already added the `login()` function to the **AuthRepo** interface.
+Add the `userInfo()` function to the login function like this:
+
+```kotlin
+override suspend fun login(email: String, password: String) {
+        val accessToken = doCall(
+            unprotectedClient.getService<AuthService>().loginWithPassword(
+                "password",
+                Networking.getClientIdValue(),
+                Networking.getClientSecretValue(),
+                email,
+                password
+            )
+        )
+
+        Networking.saveAccessToken(accessToken)
+        userInfo()
+    }
+```
+This way we will get the user info stored in the database after we logged in.
+
+* Navigate to your `LoginViewModel` and add the `authRepo` as a parameter to the constructor.
+* This will be injected so we need to add some code to the appModule:
+
+```kotlin
+val appModule = module {
+    single {
+        Room.databaseBuilder(
+            App.instance,
+            AppDatabase::class.java,
+            AppDatabase.DATABASE_NAME
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+    
+    single { UnprotectedClient() }
+    single { ProtectedClient(get()) }
+  
+    single<AuthRepo> { AuthRepoImpl(get(), get(), get()) }
+  
+    viewModel { LoginViewModel() }
+}
+```
+Let's explain what we are doing. We are creating singletons of the `AppDatabase`, `UnprotectedClient`, `ProtectedClient` and `AuthRepoImpl` classes.
+This is needed because we want to use the same instance of these classes everywhere in the app. We also want to inject the `AuthRepoImpl` class in the `LoginViewModel`.
+
+* The `AuthRepo` has a dependency on the `AppDatabase`, `UnprotectedClient` and `ProtectedClient` classes. We use the `get()` function to get the instance of these classes.
+
+#### 11.8.1 Login
+* In the `LoginViewModel` add a new function called `login()`:
+
+```kotlin
+fun login(email: String, password: String) = launchAndLoad { 
+    authRepo.login(email, password)
+}
+```
+This function can be called from the onAction of the `LoginViewModel` so we can use it in the `LoginScreen`.
+The launchAndLoad function is a function that is defined in the `BaseViewModel`. It's a function that is used to make asynchronous calls.
+
+* We want to add an **extra parameter** to the login function for future purposes.
+* At this moment we don't know if the login call **succeeds**. A handy feature of coroutines is that the **coroutine is cancelled** when an exception is thrown.
+* Therefore we add the extra parameter `onSuccess` to the `login()` function. This is a function that will be called when the login call succeeds.
+
+```kotlin
+fun login(email: String, password: String, onSuccess: () -> Unit) = launchAndLoad {
+    authRepo.login(email, password)
+    onSuccess()
+}
+```
+
+This onSuccess function will be used to **navigate** to the main screen when the **login call** succeeds.
+
+#### 11.8.2 Register
+Let's create the register functionality. Start by adding a new service called `UserService`
+We do this to keep the calls separated like in the **api documentation**.
+
+* Add this to your service: 
+
+```kotlin
+@POST("api/v1/users")
+fun register(
+  @Body userRequest: UserRequest
+): Call<User>
+```
+This is a **@POST** call with the endpoint specified in the annotation, it returns a `User` object as visible in the **documentation**.
+The call expects a **body**, also visible in the documentation. You can see this is not the same object as a `User` object.
+Therefore we create a new **request** object called `UserRequest`:
+
+* Create a new package called **model** in the **networking** package like this: **com.wiselab.<<name>>.networking.model**
+* In this package create a new package called **request**
+* In this package create a new data class called **UserRequest** with the data that is necessary for the register call
+
+**Side note**: It's possible you get objects from the api that you **don't** want as an entity. Something that has to be **mapped** to an existing entity for example.
+To solve this we create a package called **response** in the **model** package. Here we create the objects that we get from the api. We use these objects to **map** to our entities.
+
+**New Repo**
+* Create a new package called **userRepo** in the **repository** package like this: **com.wiselab.<<name>>.data.repository.userRepo**
+* You have the knowledge to create this repo with the **register call** yourself. If you need help, you can check the **authRepo**.
+* Don't forget to update the appModule with the new repo.
+* Make sure to commit and push your code. You may want to create a pull request for this.
+
+Now you are fully set up to create the rest of the application yourself. Use this codelab as a reference if you need help.
+Don't be afraid to ask for help if you need it. Good luck! 🚀

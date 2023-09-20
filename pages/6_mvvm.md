@@ -310,7 +310,7 @@ Before we can use the viewModel in the Layout, we need to add it to the app modu
 Add the following code to the file:
 
 ```kotlin
-val loginModule = module {
+val appModule = module {
     viewModel { LoginViewModel() }
 }
 ```
