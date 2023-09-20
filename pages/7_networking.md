@@ -34,7 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
 
 #### 11.1.3 Add product flavours
 * Open the **build.gradle** file of the **app** module.
-* 
+* Add `buildConfig = true` to the **buildFeatures** block
 * Add the following code to the **android** block:
 
 ```kotlin
