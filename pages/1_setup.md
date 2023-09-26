@@ -73,9 +73,9 @@ To access the designs you need to log in with your Wisemen account:
 
 * You have to create your own repository on GitHub and add your personal reviewers to your project.
 
-### Jira access
+### Ticketing system
 
-*ToDo: Add link to Jira*
+*ToDo: Add link to tickets*
 
 ## Create the project
 
@@ -86,10 +86,6 @@ Open Android Studio and create a new Compose project. You can name it Wiselab_An
 ![](index/img/setup/new_compose_project.png)
 
 Make sure your package name is: **com.wiselab.wiselab_android_<<name>>**
-
-### 3.2 Link your project to GitHub
-
-You can find the link to your repo on your [personal Confluence](https://appwise.atlassian.net/wiki/home) page.
 
 ![](index/img/setup/bitbucket_clone.png)
 
