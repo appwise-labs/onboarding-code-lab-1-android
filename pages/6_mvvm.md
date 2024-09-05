@@ -28,7 +28,7 @@ Since we want to keep the **data manipulation and the UI separate**, we have som
 
 Lets look at the image below to see the whole picture of the communication between the View and the ViewModel.
 
-![](index/img/buttonsAndScreens/mvvm_structure.png)
+![](img/buttonsAndScreens/mvvm_structure.png)
 
 We know, the whole picture is a little overwhelming. But don't worry, we will go through it step by step.
 

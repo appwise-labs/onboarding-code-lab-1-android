@@ -20,9 +20,9 @@ is **OB-1**. Create a new branch called `feature/ob-1--landing-screen`
     * OutlinedButton
 * Show a preview of the buttons like this:
 
-<img width="400" src="index/img/setup/button_preview.png" />
+<img width="400" src="img/setup/button_preview.png" />
 
-Note that you can see the preview when clicking on the <img width="50" src="index/img/buttonsAndScreens/ide_preview_button.png" /> button in the top
+Note that you can see the preview when clicking on the <img width="50" src="img/buttonsAndScreens/ide_preview_button.png" /> button in the top
 right corner of the IDE.
 
 * Here's a bit of code to get you going:
@@ -112,7 +112,7 @@ In this package create a new package called **landing** for the landing screen. 
 
 * This is the preview we are working towards:
 
-<img width="400" src="index/img/buttonsAndScreens/landing_preview.png" />
+<img width="400" src="img/buttonsAndScreens/landing_preview.png" />
 
 #### 7.2.1 Create the Layout
 

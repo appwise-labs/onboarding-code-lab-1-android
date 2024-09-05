@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
 In the top right of your IDE you can select the device you want to run your app on. Select a device and run the app
 configuration. If you can't find it, try clicking the arrow down to see all configurations like this:
 
-![Run configuration](index/img/buttonsAndScreens/run_app_configuration.png)
+![Run configuration](img/buttonsAndScreens/run_app_configuration.png)
 
 You should see the landing screen now! 🙌🏻
 Don't forget to commit an push your changes with a proper commit message including the ticket number!

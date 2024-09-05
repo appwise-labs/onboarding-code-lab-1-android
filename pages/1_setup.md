@@ -10,7 +10,7 @@ status: Draft
 
 ## What you'll learn: overview
 
-<img width="200" src="index/img/intro/wisemen_logo_acid.png" />
+<img width="200" src="img/intro/wisemen_logo_acid.png" />
 
 Hello fellow developer! Welcome to **Wisemen**, we are happy to have you on board! We want to make sure you are
 soon up to speed with the core of Android development and our way of working.
@@ -48,7 +48,7 @@ are written in Jetpack Compose, therefore we will be using that for this Wiselab
 
 ### Let's get started!
 
-![](index/img/intro/android-hello.gif)
+![](img/intro/android-hello.gif)
 
 ## What you need: Prerequisites
 
@@ -83,7 +83,7 @@ To access the designs you need to log in with your Wisemen account:
 
 Open Android Studio and create a new Compose project. You can name it Wiselab_Android_<<Name>>.
 
-![](index/img/setup/new_compose_project.png)
+![](img/setup/new_compose_project.png)
 
 Make sure your package name is: **com.wiselab.wiselab_android_<<name>>**
 
@@ -91,7 +91,7 @@ Make sure your package name is: **com.wiselab.wiselab_android_<<name>>**
 
 You can find the link to your repo on your [personal Confluence](https://appwise.atlassian.net/wiki/home) page.
 
-![](index/img/setup/bitbucket_clone.png)
+![](img/setup/bitbucket_clone.png)
 
 #### Use the terminal or IDE to link your project to BitBucket
 
@@ -415,7 +415,7 @@ In the **MainActivity.kt** file, click on the **Preview** button next to the **G
 will open a preview of your app in the IDE. If you have a virtual or physical device connected, you can also run
 the app on your device.
 
-![](index/img/setup/preview_example.png)
+![](img/setup/preview_example.png)
 
 Now you can push your changes to your **feature/setup-project** branch with a clear commit message and create a
 pull request to merge your branch into the **develop** branch. Don't forget to add your buddy as a reviewer! 🕵️

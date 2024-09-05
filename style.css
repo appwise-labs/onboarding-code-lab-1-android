@@ -1,0 +1,56 @@
+i {
+    color: white;
+}
+
+google-codelab #drawer,
+google-codelab #codelab-title,
+google-codelab #main,
+google-codelab:not([theme="minimal"]) google-codelab-step .instructions {
+    background-color: #1e1e20;
+    color: white;
+}
+
+google-codelab #drawer ol li a,
+google-codelab-step pre {
+    background-color: #252529;
+    border-color: #252529;
+}
+
+google-codelab-step pre .pln, google-codelab-step code .pln {
+    color: #a6accd;
+}
+
+google-codelab #drawer ol li[completed] a {
+    color: white;
+}
+
+google-codelab #drawer ol li[selected] a, google-codelab #drawer ol li a:focus {
+    color: #CBFF01;
+    background: #44444b;
+    border-color: #44444b;
+}
+
+google-codelab #drawer ol li[completed] .step:before {
+    background-color: #CBFF01;
+    color: #2F4858
+}
+
+#previous-step, #next-step, #done {
+    background-color: #252529;
+    color: #CBFF01;
+}
+
+#next-step {
+    background-color: #CBFF01;
+    color: #262626;
+}
+
+google-codelab-step code {
+    background-color: #262626;
+    color: #a6accd;
+}
+
+google-codelab:not([theme="minimal"]) google-codelab-step .instructions a, google-codelab:not([theme="minimal"]) google-codelab-step .instructions a:visited {
+    color: #CBFF01;
+
+}
